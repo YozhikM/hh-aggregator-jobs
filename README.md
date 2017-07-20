@@ -1,4 +1,5 @@
-# WebpackBin project
+# 
+Aggregator of vacancies with HH on personal request
 
 ## Start
 
