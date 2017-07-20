@@ -21,8 +21,8 @@
             flex-direction: column;
             width: 100%;
             height: 20vh;
-            background-color: #d10b0f;
-            color: #fff;
+            background-color: #fff;
+            color: #111;
         }
         
         h1 {
@@ -39,7 +39,7 @@
             padding-bottom: 5%;
             margin: auto;
             text-align: center;
-            width: 100%;
+            width: 90%;
         }
         
         h4 {
@@ -64,7 +64,7 @@
             flex-direction: column;
             align-items: center;
             background-color: #fff;
-            color: #000;
+            color: #111;
             cursor: pointer;
         }
         
@@ -93,9 +93,11 @@
             margin-top: 2%;
         }
         
-        .icons img {
-            max-width: 3vw;
+        .icons p {
+            background-color: lavender;
             margin: 2%;
+            width: 25%;
+            padding: 1%;
         }
         
         .card-section {
@@ -164,7 +166,7 @@
         .card-section .company {
             color: #111;
             font-size: 1em;
-            padding-left: 4%;
+            margin-left: 2%;
         }
         
         a:hover {
@@ -224,8 +226,9 @@
                             <p v-show="isCSS(item) == true">CSS</p>
                             <p v-show="isJQ(item) == true">JQuery</p>
                             <p v-show="isJS(item) == true">JS</p>
+                            <p v-show="isBootstrap(item) == true">Bootstrap</p>
                             <p v-show="isNode(item) == true">Node.js</p>
-                            <p v-show="isMongo(item) == true">Mongo.db</p>
+                            <p v-show="isMongo(item) == true">MongoDB</p>
                             <p v-show="isAngular(item) == true">Angular</p>
                             <p v-show="isVue(item) == true">Vue</p>
                             <p v-show="isReact(item) == true">React</p>
@@ -240,7 +243,7 @@
                         <h3><strong>Работодатель:</strong><a v-bind:href="item.employer.alternate_url" class="company">{{ item.employer.name }}</a></h3>
                         <div class="inline">
                             <p><strong>Адрес:</strong> {{city(item)}}</p>
-                            <a v-bind:href="map(item)" class="map">Посмотреть, где это<img src="img/placeholder.svg"></a>
+                            <a v-bind:href="map(item)" class="map">Посмотреть, где это<img src="https://image.flaticon.com/icons/svg/149/149060.svg"></a>
                         </div>
                         <strong>Требования:</strong>
                         <p v-html="item.snippet.requirement"></p>

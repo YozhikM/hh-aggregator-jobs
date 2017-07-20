@@ -13,7 +13,7 @@ const app = new Vue({
     mounted() {
         self = this;
         this.$http.get(
-            "https://api.hh.ru/vacancies?text=html+css+javascript+OR+node+OR+angular+OR+react+OR+vue+OR+typescript+OR+jquery+NOT+python+NOT+java+NOT+asp+NOT+sharepoint+NOT+php&area=160&per_page=500&order_by=publication_time"
+            "https://api.hh.ru/vacancies?text=html+css+javascript+OR+jquery&area=160&per_page=500&order_by=publication_time"
         ).then(function (response) {
             self.items = response.data.items;
             self.data = response.data;
@@ -24,99 +24,106 @@ const app = new Vue({
     },
     methods: {
         isDesign: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/дизайн/i || /UI/i || /UX/i) == -1) {
                 return false;
             }
             return true;
         },
         isNode: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/Node/i || /node/i) == -1) {
                 return false;
             }
             return true;
         },
         isMongo: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/Mongo/i || /mongo/i) == -1) {
                 return false;
             }
             return true;
         },
         isPHP: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/php/i || /PHP/i) == -1) {
                 return false;
             }
             return true;
         },
         isHTML: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/html/i) == -1) {
                 return false;
             }
             return true;
         },
         isCSS: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/css/i || /CSS/i) == -1) {
                 return false;
             }
             return true;
         },
         isSQL: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/sql/i || /SQL/i) == -1) {
                 return false;
             }
             return true;
         },
         isJS: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
-            if (str.search(/javascript/ig || /js/ig || /JS/ig) == -1) {
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
+            if (str.search(/javascript/ig || /js/ig || /script/ig) == -1) {
                 return false;
             }
             return true;
         },
         isJQ: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/jquery/i) == -1) {
                 return false;
             }
             return true;
         },
         isVue: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/vue/i) == -1) {
                 return false;
             }
             return true;
         },
         isAngular: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/angular/i) == -1) {
                 return false;
             }
             return true;
         },
         isReact: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/react/i) == -1) {
                 return false;
             }
             return true;
         },
         isTS: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/typescript/i) == -1) {
                 return false;
             }
             return true;
         },
         isPython: (item) => {
-            var str = item.snippet.requirement + item.snippet.responsibility;
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
             if (str.search(/python/i) == -1) {
+                return false;
+            }
+            return true;
+        },
+        isBootstrap: (item) => {
+            var str = item.snippet.requirement + item.snippet.responsibility + item.name;
+            if (str.search(/bootstrap/i) == -1) {
                 return false;
             }
             return true;
