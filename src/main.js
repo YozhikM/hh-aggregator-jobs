@@ -8,12 +8,18 @@ const app = new Vue({
     el: '#app',
     data: {
         items: [],
-        data: {}
+        data: {},
+        query: ''
+    },
+    computed: {
+        filteredItems:function() {
+        var self=this;
+        return this.items.filter(function(item){return item.name.toLowerCase().indexOf(self.query.toLowerCase())>=0;}); }
     },
     mounted() {
         self = this;
         this.$http.get(
-            "https://api.hh.ru/vacancies?text=html+css+javascript+OR+jquery&area=160&per_page=500&order_by=publication_time"
+            "https://api.hh.ru/vacancies?text=javascript+css+OR+jquery&area=160&per_page=500&order_by=publication_time"
         ).then(function (response) {
             self.items = response.data.items;
             self.data = response.data;

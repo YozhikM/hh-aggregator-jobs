@@ -1,261 +1,275 @@
 <!DOCTYPE html>
 <html lang="ru">
-
-<head>
-    <meta charset="utf-8">
-    <title>HeadHunter #160</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&amp;subset=cyrillic" rel="stylesheet">
-    <style>
+    <head>
+        <meta charset="utf-8">
+        <title>HeadHunter #160</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&amp;subset=cyrillic" rel="stylesheet">
+        <style>
         * {
-            font-family: 'Roboto';
+        font-family: 'Roboto';
         }
         
         img {
-            width: 50px;
+        width: 50px;
         }
         
         header {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            height: 20vh;
-            background-color: #fff;
-            color: #111;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 20vh;
+        background-color: #fff;
+        color: #111;
+        }
+        header input {
+        width: 50%;
+        margin: auto;
+        padding: 1%;
+        }
+
+        header input::placeholder {
+        text-align: center;
+        }
+
+        header input:focus {
+        text-align: center;
+        }
+
+        header input:focus::placeholder {
+        opacity: 0;
         }
         
         h1 {
-            font-size: 3em;
-            margin: auto;
+        font-size: 3em;
+        margin: auto;
         }
         
         h2 {
-            margin: auto;
+        margin: auto;
         }
         
         h3 {
-            padding-top: 5%;
-            padding-bottom: 5%;
-            margin: auto;
-            text-align: center;
-            width: 90%;
+        margin: auto;
+        text-align: center;
+        width: 90%;
         }
         
         h4 {
-            margin: auto;
+        margin: auto;
         }
         
         .container {
-            display: flex;
-            flex-flow: row wrap;
+        display: flex;
+        flex-flow: row wrap;
         }
         
         .card {
-            width: 29%;
-            margin: 2%;
-            box-sizing: border-box;
-            border: 10px solid #999;
+        width: 29%;
+        margin: 2%;
+        box-sizing: border-box;
+        border: 10px solid #999;
         }
         
         .card-header {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-            background-color: #fff;
-            color: #111;
-            cursor: pointer;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        background-color: #fff;
+        color: #111;
+        cursor: pointer;
         }
         
         .card-header a {
-            font-size: 2em;
-            padding-top: 5%;
-            padding-bottom: 5%;
-            margin: auto;
-            text-align: center;
-            width: 90%;
-            color: #111;
+        font-size: 2em;
+        padding-top: 5%;
+        padding-bottom: 5%;
+        margin: auto;
+        text-align: center;
+        width: 90%;
+        color: #111;
         }
         
         .card-header p {
-			margin-left: 5%;
-            text-align: center;
-			color: #111;
+        margin-left: 5%;
+        text-align: center;
+        color: #111;
         }
         
         .icons {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            width: 100%;
-            justify-content: center;
-            margin-top: 2%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        width: 100%;
+        justify-content: center;
+        margin-top: 2%;
         }
         
         .icons p {
-            background-color: lavender;
-            margin: 2%;
-            width: 25%;
-            padding: 1%;
+        background-color: lavender;
+        margin: 2%;
+        width: 25%;
+        padding: 1%;
         }
         
         .card-section {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 5%;
-            height: auto;
-            transition: height .6s ease-in;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 5%;
+        height: auto;
+        transition: height .6s ease-in;
         }
         
         .card-section a {
-            text-decoration: none;
+        text-decoration: none;
         }
         
         .card-section p {
-            padding-left: 3%;
-            padding-right: 3%;
-            line-height: 1.5;
-            font-size: .9em;
+        padding-left: 3%;
+        padding-right: 3%;
+        line-height: 1.5;
+        font-size: .9em;
         }
         
         .button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 50%;
-            height: 8vh;
-            margin: auto;
-            background-color: #d10b0f;
-            cursor: pointer;
-            box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        height: 8vh;
+        margin: auto;
+        background-color: #d10b0f;
+        cursor: pointer;
+        box-sizing: border-box;
         }
         
         .button p {
-            color: #fff;
+        color: #fff;
         }
         
         .card-section .button:hover {
-            background-color: #fff;
-            border: 3px solid #d10b0f;
-            text-decoration: none;
+        background-color: #fff;
+        border: 3px solid #d10b0f;
+        text-decoration: none;
         }
         
         .card-section .button:hover p {
-            color: #d10b0f;
+        color: #d10b0f;
         }
         
         strong {
-            padding-left: 3%;
+        padding-left: 3%;
         }
         
         .card-section .map {
-            color: #111;
-            text-decoration: none;
-            padding: 3% 0 3% 3%;
-            display: flex;
-            align-items: center;
-            font-size: .9em;
+        color: #111;
+        text-decoration: none;
+        padding: 3% 0 3% 3%;
+        display: flex;
+        align-items: center;
+        font-size: .9em;
         }
         
         .map img {
-            max-width: 9%;
-            padding-left: 1%;
+        max-width: 9%;
+        padding-left: 1%;
         }
         
         .card-section .company {
-            color: #111;
-            font-size: 1em;
-            margin-left: 2%;
+        color: #111;
+        font-size: 1em;
+        margin-left: 2%;
         }
         
         a:hover {
-            text-decoration: underline;
+        text-decoration: underline;
         }
         
         .inline {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
         }
         
         .inline p,
         .inline a {
-            text-align: center;
-            width: 100%;
+        text-align: center;
+        width: 100%;
         }
         
         .company-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #ffcc00;
-            width: 80%;
-            height: 8vh;
-            margin: auto;
-            margin-bottom: 5%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffcc00;
+        width: 80%;
+        height: 8vh;
+        margin: auto;
+        margin-bottom: 5%;
         }
         
         input::placeholder {
-            color: #111;
+        color: #111;
         }
         
         @media screen and (max-width: 568px) {
-            .card {
-                width: 96%;
-            }
+        .card {
+        width: 96%;
         }
-
-    </style>
-</head>
-
-<body>
-    <div class="pure-g" id="app">
-        <div class="pure-u-1">
-            <header>
-                <h3>По запросу 'html css js' в Алматы найдено вакансий: {{data.found}}</h3>
-            </header>
-        </div>
-        <div class="pure-u-1">
-            <div class="container">
-                <div class="card" v-for="item in items">
-                    <div class="card-header">
-                        <div class="icons">
-                            <p v-show="isPHP(item) == true">PHP</p>
-                            <p v-show="isHTML(item) == true">HTML</p>
-                            <p v-show="isCSS(item) == true">CSS</p>
-                            <p v-show="isJQ(item) == true">JQuery</p>
-                            <p v-show="isJS(item) == true">JS</p>
-                            <p v-show="isBootstrap(item) == true">Bootstrap</p>
-                            <p v-show="isNode(item) == true">Node.js</p>
-                            <p v-show="isMongo(item) == true">MongoDB</p>
-                            <p v-show="isAngular(item) == true">Angular</p>
-                            <p v-show="isVue(item) == true">Vue</p>
-                            <p v-show="isReact(item) == true">React</p>
-                            <p v-show="isSQL(item) == true">SQL</p>
-                            <p v-show="isTS(item) == true">TS</p>
-                            <p v-show="isDesign(item) == true">Дизайн</p>
+        }
+        .clicked {
+        display: none !important;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="pure-g" id="app">
+            <div class="pure-u-1">
+                <header>
+                    <h3>По запросу 'javascript' в Алматы найдено вакансий: {{data.found}}</h3>
+                    <input placeholder="Введите название вакансии" v-model="query">
+                </header>
+            </div>
+            <div class="pure-u-1">
+                <div class="container">
+                    <div class="card" v-for="item in filteredItems">
+                        <div class="card-header">
+                            <div class="icons">
+                                <p v-show="isPHP(item) == true">PHP</p>
+                                <p v-show="isHTML(item) == true">HTML</p>
+                                <p v-show="isCSS(item) == true">CSS</p>
+                                <p v-show="isJQ(item) == true">JQuery</p>
+                                <p v-show="isJS(item) == true">JS</p>
+                                <p v-show="isBootstrap(item) == true">Bootstrap</p>
+                                <p v-show="isNode(item) == true">Node.js</p>
+                                <p v-show="isMongo(item) == true">MongoDB</p>
+                                <p v-show="isAngular(item) == true">Angular</p>
+                                <p v-show="isVue(item) == true">Vue</p>
+                                <p v-show="isReact(item) == true">React</p>
+                                <p v-show="isSQL(item) == true">SQL</p>
+                                <p v-show="isTS(item) == true">TS</p>
+                                <p v-show="isDesign(item) == true">Дизайн</p>
+                            </div>
+                            <a v-bind:href="item.alternate_url">{{ item.name }}</a>
+                            <p><strong>Зарплата</strong> {{ salary(item) }}</p>
                         </div>
-                        <a v-bind:href="item.alternate_url">{{ item.name }}</a>
-                        <p><strong>Зарплата</strong> {{ salary(item) }}</p>
-                    </div>
-                    <div class="card-section">
-                        <h3><strong>Работодатель:</strong><a v-bind:href="item.employer.alternate_url" class="company">{{ item.employer.name }}</a></h3>
-                        <div class="inline">
-                            <p><strong>Адрес:</strong> {{city(item)}}</p>
-                            <a v-bind:href="map(item)" class="map">Посмотреть, где это<img src="https://image.flaticon.com/icons/svg/149/149060.svg"></a>
+                        <div class="card-section">
+                            <h3><strong>Работодатель:</strong><a v-bind:href="item.employer.alternate_url" class="company">{{ item.employer.name }}</a></h3>
+                            <div class="inline">
+                                <p><strong>Адрес:</strong> {{ city(item) }}</p>
+                                <a v-bind:href="map(item)" class="map">Посмотреть, где это <img src="https://image.flaticon.com/icons/svg/149/149060.svg"></a>
+                            </div>
+                            <strong>Требования:</strong>
+                            <p v-html="item.snippet.requirement"></p>
+                            <strong>Обязанности:</strong>
+                            <p v-html="item.snippet.responsibility"></p>
                         </div>
-                        <strong>Требования:</strong>
-                        <p v-html="item.snippet.requirement"></p>
-                        <strong>Обязанности:</strong>
-                        <p v-html="item.snippet.responsibility"></p>
-
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="main.js"></script>
-</body>
-
+        <script src="main.js"></script>
+    </body>
 </html>
