@@ -2,233 +2,17 @@
 <html lang="ru">
     <head>
         <meta charset="utf-8">
-        <title>HeadHunter #160</title>
+        <title>Region #160</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&amp;subset=cyrillic" rel="stylesheet">
-        <style>
-        * {
-        font-family: 'Roboto';
-        }
-        
-        img {
-        width: 50px;
-        }
-        
-        header {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: 20vh;
-        background-color: #fff;
-        color: #111;
-        }
-        header input {
-        width: 50%;
-        margin: auto;
-        padding: 1%;
-        }
-
-        header input::placeholder {
-        text-align: center;
-        }
-
-        header input:focus {
-        text-align: center;
-        }
-
-        header input:focus::placeholder {
-        opacity: 0;
-        }
-        
-        h1 {
-        font-size: 3em;
-        margin: auto;
-        }
-        
-        h2 {
-        margin: auto;
-        }
-        
-        h3 {
-        margin: auto;
-        text-align: center;
-        width: 90%;
-        }
-        
-        h4 {
-        margin: auto;
-        }
-        
-        .container {
-        display: flex;
-        flex-flow: row wrap;
-        }
-        
-        .card {
-        width: 29%;
-        margin: 2%;
-        box-sizing: border-box;
-        border: 10px solid #999;
-        }
-        
-        .card-header {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-        background-color: #fff;
-        color: #111;
-        cursor: pointer;
-        }
-        
-        .card-header a {
-        font-size: 2em;
-        padding-top: 5%;
-        padding-bottom: 5%;
-        margin: auto;
-        text-align: center;
-        width: 90%;
-        color: #111;
-        }
-        
-        .card-header p {
-        margin-left: 5%;
-        text-align: center;
-        color: #111;
-        }
-        
-        .icons {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        width: 100%;
-        justify-content: center;
-        margin-top: 2%;
-        }
-        
-        .icons p {
-        background-color: lavender;
-        margin: 2%;
-        width: 25%;
-        padding: 1%;
-        }
-        
-        .card-section {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 5%;
-        height: auto;
-        transition: height .6s ease-in;
-        }
-        
-        .card-section a {
-        text-decoration: none;
-        }
-        
-        .card-section p {
-        padding-left: 3%;
-        padding-right: 3%;
-        line-height: 1.5;
-        font-size: .9em;
-        }
-        
-        .button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 50%;
-        height: 8vh;
-        margin: auto;
-        background-color: #d10b0f;
-        cursor: pointer;
-        box-sizing: border-box;
-        }
-        
-        .button p {
-        color: #fff;
-        }
-        
-        .card-section .button:hover {
-        background-color: #fff;
-        border: 3px solid #d10b0f;
-        text-decoration: none;
-        }
-        
-        .card-section .button:hover p {
-        color: #d10b0f;
-        }
-        
-        strong {
-        padding-left: 3%;
-        }
-        
-        .card-section .map {
-        color: #111;
-        text-decoration: none;
-        padding: 3% 0 3% 3%;
-        display: flex;
-        align-items: center;
-        font-size: .9em;
-        }
-        
-        .map img {
-        max-width: 9%;
-        padding-left: 1%;
-        }
-        
-        .card-section .company {
-        color: #111;
-        font-size: 1em;
-        margin-left: 2%;
-        }
-        
-        a:hover {
-        text-decoration: underline;
-        }
-        
-        .inline {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        }
-        
-        .inline p,
-        .inline a {
-        text-align: center;
-        width: 100%;
-        }
-        
-        .company-wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #ffcc00;
-        width: 80%;
-        height: 8vh;
-        margin: auto;
-        margin-bottom: 5%;
-        }
-        
-        input::placeholder {
-        color: #111;
-        }
-        
-        @media screen and (max-width: 568px) {
-        .card {
-        width: 96%;
-        }
-        }
-        .clicked {
-        display: none !important;
-        }
-        </style>
+        <link href="src/style.css">
     </head>
     <body>
         <div class="pure-g" id="app">
             <div class="pure-u-1">
                 <header>
-                    <h3>По запросу 'javascript' в Алматы найдено вакансий: {{data.found}}</h3>
+                    <h3>По запросу 'javascript' в Алматы найдено вакансий: {{data.found}} </h3>
                     <input placeholder="Введите название вакансии" v-model="query">
                 </header>
             </div>
@@ -270,6 +54,9 @@
                 </div>
             </div>
         </div>
-        <script src="main.js"></script>
+        <script src="https://unpkg.com/vue@2.4.1/dist/vue.js"></script>
+        <script src="app/axios.min.js"></script>
+        <script src="app/vue-axios.min.js"></script>
+        <script src="app/main.js"></script>
     </body>
 </html>
