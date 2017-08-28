@@ -6,9 +6,9 @@ const app = new Vue({
     query: ""
   },
   computed: {
-    filteredItems: function() {
+    filteredItems: () => {
       var self = this;
-      return this.items.filter(function(item) {
+      return this.items.filter(item => {
         return item.name.toLowerCase().indexOf(self.query.toLowerCase()) >= 0;
       });
     }
@@ -19,12 +19,12 @@ const app = new Vue({
       .get(
         "https://api.hh.ru/vacancies?text=javascript&area=160&per_page=500&order_by=publication_time"
       )
-      .then(function(response) {
+      .then(response => {
         self.items = response.data.items;
         self.data = response.data;
         console.log(response);
       })
-      .catch(function(error) {
+      .catch(error => {
         console.log(error);
       });
   },
