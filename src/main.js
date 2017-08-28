@@ -152,32 +152,26 @@ const app = new Vue({
     map: item => {
       return item.address === null
         ? ""
-        : "https://yandex.kz/maps/162/almaty/?ll=" +
-          item.address.lng +
-          "%2C" +
-          item.address.lat +
-          "&z=18&mode=whatshere&whatshere%5Bpoint%5D=" +
-          item.address.lng +
-          "%2C" +
-          item.address.lat +
-          "&whatshere%5Bzoom%5D=18";
+        : `https://yandex.kz/maps/162/almaty/?ll=${item.address.lng}%2C${item
+            .address.lat}&z=18&mode=whatshere&whatshere%5Bpoint%5D=${item
+            .address.lng}%2C${item.address.lat}&whatshere%5Bzoom%5D=18`;
     },
     salary: item => {
       if (item.salary === null) {
-        return "не указана";
+        return `\u043D\u0435 \u0443\u043A\u0430\u0437\u0430\u043D\u0430`;
       }
       var salary =
         item.salary.to === null
           ? ""
-          : " до " + Math.floor(item.salary.to / 5.6);
-      return " от " + Math.floor(item.salary.from / 5.6) + salary + " " + "RUB";
+          : `\u0434\u043E ${Math.floor(item.salary.to / 5.6)}`;
+      return `\u043E\u0442 ${Math.floor(item.salary.from / 5.6)}${salary} RUB`;
     },
     city: item => {
       return item.address === null
-        ? "не указан"
-        : item.address.street +
-          " " +
-          (item.address.building === null ? "" : item.address.building);
+        ? `\u043D\u0435 \u0443\u043A\u0430\u0437\u0430\u043D`
+        : `${item.address.street} ${item.address.building === null
+            ? ""
+            : item.address.building}`;
     }
   }
 });
