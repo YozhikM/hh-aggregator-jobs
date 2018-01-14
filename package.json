@@ -1,23 +1,29 @@
 {
-  "name": "webpackbin-project",
+  "name": "hh-aggregator",
   "version": "1.0.0",
-  "description": "Project boilerplate",
+  "description": "Aggregator vacancies",
   "scripts": {
-    "start": "webpack-dev-server --content-base build/ --port 3000"
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
+  "author": "Stanislav Botev",
+  "license": "MIT",
   "dependencies": {
-    "axios": "0.16.2",
-    "vue": "2.4.1",
-    "vue-axios": "2.0.2"
+    "papercss": "^1.4.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "html-webpack-plugin": "2.22.0",
-    "webpack-dev-server": "2.3.0",
-    "webpack": "^2.2.0",
-    "babel-core": "^6.23.1",
-    "babel-loader": "^6.2.10",
-    "babel-preset-es2015": "^6.22.0"
-  },
-  "author": "WebpackBin",
-  "license": "ISC"
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^4.15.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.5.1",
+    "flow-bin": "^0.63.1",
+    "parcel-bundler": "^1.4.1"
+  }
 }
