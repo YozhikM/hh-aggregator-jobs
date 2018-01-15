@@ -5,6 +5,7 @@ import 'papercss/dist/paper.min.css';
 
 type Props = {
   pages?: number,
+  onClick?: Function,
 };
 
 export default class Nav extends React.Component<Props, void> {

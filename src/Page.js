@@ -36,6 +36,7 @@ export default class Page extends React.Component<Props, void> {
           const { id, alternate_url: jobUrl, name, salary, employer, snippet } = job || {};
 
           const { requirement, responsibility } = snippet || {};
+          const { alternate_url: companyUrl, name: companyName } = employer || {};
 
           return (
             <div className="sm-1 md-3 lg-4 col align-top" key={id}>
@@ -50,8 +51,8 @@ export default class Page extends React.Component<Props, void> {
                   </p>
                 </div>
                 <div className="card-body">
-                  <a href={employer.alternate_url} className="card-text">
-                    {employer.name}
+                  <a href={companyUrl} className="card-text">
+                    {companyName}
                   </a>
                   <div className="margin">
                     {requirement && (

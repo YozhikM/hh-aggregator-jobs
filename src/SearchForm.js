@@ -8,6 +8,8 @@ type Props = {
 };
 
 export default class SearchForm extends React.Component<Props, void> {
+  onChange: Function;
+
   constructor(props: Props) {
     super(props);
 

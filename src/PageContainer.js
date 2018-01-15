@@ -18,6 +18,9 @@ type State = {
 };
 
 export default class PageContainer extends React.Component<Props, State> {
+  onChange: Function;
+  fetchData: Function;
+
   constructor(props: Props) {
     super(props);
 
@@ -31,8 +34,9 @@ export default class PageContainer extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.fetchData(1);
+    this.fetchData();
   }
+
 
   fetchData(page: number = 1, perPage: number = 9) {
     const { query, city } = this.state;

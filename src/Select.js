@@ -15,27 +15,36 @@ const options = [
 ];
 
 export default class Select extends React.Component<Props, void> {
+  _select: ?HTMLSelectElement;
+  onChange: Function;
+
   constructor(props: Props) {
     super(props);
 
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange(id: number) {
+  onChange(e: Event) {
     const { onChange } = this.props;
-    if (onChange) onChange(id);
+    if (onChange && this._select) onChange(this._select.value);
   }
 
   render() {
     return (
       <div className="row flex-center">
         <div className="form-group margin">
-          <label for="city">Cities</label>
-          <select id="city">
+          <label htmlFor="city">Cities</label>
+          <select
+            id="city"
+            ref={select => {
+              this._select = select;
+            }}
+            onChange={this.onChange}
+          >
             {options.map(option => {
               const { id, value } = option || {};
               return (
-                <option key={id} value="id" onClick={() => this.onChange(id)}>
+                <option key={id} value={id}>
                   {value}
                 </option>
               );
