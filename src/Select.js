@@ -1,9 +1,32 @@
-import * as React from "react";
-import "papercss/dist/paper.min.css";
+/* @flow */
 
-export default class Select extends React.Component {
+import * as React from 'react';
+import 'papercss/dist/paper.min.css';
+
+type Props = {
+  onChange: Function,
+};
+
+const options = [
+  { id: 160, value: 'Almaty' },
+  { id: 3, value: 'Ekaterinburg' },
+  { id: 4, value: 'Novosibirsk' },
+  { id: 88, value: 'Kazan' },
+];
+
+export default class Select extends React.Component<Props, void> {
+  constructor(props: Props) {
+    super(props);
+
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange(id: number) {
+    const { onChange } = this.props;
+    if (onChange) onChange(id);
+  }
+
   render() {
-    const options = [{ id: 160, value: "Almaty" }, { id: 3, value: 'Ekaterinburg'}, { id: 4, value: 'Novosibirsk'}, { id: 88, value: 'Kazan'}];
     return (
       <div className="row flex-center">
         <div className="form-group margin">
@@ -12,7 +35,7 @@ export default class Select extends React.Component {
             {options.map(option => {
               const { id, value } = option || {};
               return (
-                <option key={id} value="id" onClick={() => this.props.onChange(id)}>
+                <option key={id} value="id" onClick={() => this.onChange(id)}>
                   {value}
                 </option>
               );

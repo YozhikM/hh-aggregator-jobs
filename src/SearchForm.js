@@ -1,14 +1,20 @@
-import * as React from "react";
-import "papercss/dist/paper.min.css";
+/* @flow */
 
-export default class SearchForm extends React.Component {
-  constructor(props) {
+import * as React from 'react';
+import 'papercss/dist/paper.min.css';
+
+type Props = {
+  onChange: Function,
+};
+
+export default class SearchForm extends React.Component<Props, void> {
+  constructor(props: Props) {
     super(props);
 
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange(e) {
+  onChange(e: SyntheticInputEvent<>) {
     const { onChange } = this.props;
     onChange(e.target.value);
   }

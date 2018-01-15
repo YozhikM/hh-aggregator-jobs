@@ -4285,10 +4285,6 @@ pako@~1.0.5:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.6.tgz#0101211baa70c4bca4a0f63f2206e97b7dfaf258"
 
-paper-css@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/paper-css/-/paper-css-0.3.0.tgz#0abdfd304a6846471e23c873eaacafd5fe66ec39"
-
 papercss@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/papercss/-/papercss-1.4.1.tgz#f0e6667e8fa52dccecb7467cfe43f50c5d6bf0be"

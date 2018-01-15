@@ -1,8 +1,14 @@
-import * as React from "react";
-import "papercss/dist/paper.min.css";
+/* @flow */
 
-export default class Nav extends React.Component {
-  initializeArray(end, start = 0, step = 1) {
+import * as React from 'react';
+import 'papercss/dist/paper.min.css';
+
+type Props = {
+  pages?: number,
+};
+
+export default class Nav extends React.Component<Props, void> {
+  initializeArray(end: number, start: number = 0, step: number = 1) {
     return Array.from({ length: Math.ceil((end + 1 - start) / step) }).map(
       (v, i) => i * step + start
     );
@@ -10,6 +16,8 @@ export default class Nav extends React.Component {
 
   render() {
     const { pages } = this.props;
+    if (!pages) return null;
+
     const pagesArray = this.initializeArray(pages - 1, 1);
 
     return (
@@ -19,7 +27,9 @@ export default class Nav extends React.Component {
             <button
               className="btn-small"
               key={page}
-              onClick={() => this.props.onClick(page)}
+              onClick={() => {
+                if (this.props.onClick) this.props.onClick(page);
+              }}
             >
               {page}
             </button>
