@@ -5,35 +5,22 @@ import { Link } from 'react-router';
 import 'papercss/dist/paper.min.css';
 
 type Props = {
-  pages?: number,
-  onClick?: Function,
+  pages?: Array<number>,
+  city?: number,
 };
 
 export default class Nav extends React.Component<Props, void> {
-  initializeArray(end: number, start: number = 0, step: number = 1) {
-    return Array.from({ length: Math.ceil((end + 1 - start) / step) }).map(
-      (v, i) => i * step + start
-    );
-  }
 
   render() {
-    const { pages } = this.props;
-    if (!pages) return null;
-
-    const pagesArray = this.initializeArray(pages - 1, 1);
+    const { pages, city } = this.props;
+    if (!pages || !city) return null;
 
     return (
       <div className="row flex-center align-bottom">
-        {pagesArray.map(page => {
+        {pages.map(page => {
           return (
-            <Link to={`/${page}`}>
-              <button
-                className="btn-small"
-                key={page}
-                onClick={() => {
-                  if (this.props.onClick) this.props.onClick(page);
-                }}
-              >
+            <Link to={`/${city}/${page}`} key={`${city}${page}`}>
+              <button className="btn-small">
                 {page}
               </button>
             </Link>
