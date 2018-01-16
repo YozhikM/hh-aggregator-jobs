@@ -25,7 +25,7 @@ export default class SearchForm extends React.Component<Props, void> {
     return (
       <div className="row flex-center">
         <div className="form-group margin">
-          <label for="query">Поиск</label>
+          <label htmlFor="query">Поиск</label>
           <input
             type="text"
             placeholder="Слова разделяются пробелами"

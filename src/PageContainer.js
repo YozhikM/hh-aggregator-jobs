@@ -5,7 +5,6 @@ import 'papercss/dist/paper.min.css';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import Page from './Page';
 import Nav from './Nav';
-import Select from './Select';
 import { type Jobs } from './type';
 
 type Props = {};
@@ -34,7 +33,7 @@ export default class PageContainer extends React.Component<Props, State> {
 
   componentDidMount() {
     const { city } = this.state;
-    const item = localStorage.getItem(`pages_${city}`);
+    const item = localStorage.getItem(`pages_city`);
     if (item) this.setState({ pages: JSON.parse(item) });
   }
 
@@ -54,16 +53,13 @@ export default class PageContainer extends React.Component<Props, State> {
         <div>
           <Route exact path="/" component={Page} />
           <Route path="/:city/:page" component={Page} />
+
           <div className="row flex-center align-bottom">
-            {pagesArray.map(page => {
-              return (
-                <Link to={`/${city}/${page}`} key={`${city}${page}`}>
-                  <button className="btn-small">
-                    {page}
-                  </button>
-                </Link>
-              );
-            })}
+            {pagesArray.map(page => (
+              <Link to={`/${city}/${page}`} key={`${city}${page}`}>
+                <button className="btn-small">{page}</button>
+              </Link>
+              ))}
           </div>
         </div>
       </Router>

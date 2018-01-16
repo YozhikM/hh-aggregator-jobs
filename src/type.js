@@ -23,7 +23,7 @@ export type Jobs = $ReadOnlyArray<{|
   +created_at: string,
   +alternate_url: string,
   +apply_alternate_url: string,
-  +relations: $ReadOnlyArray<any /* FIXME: Type could not be determined */>,
+  +relations: $ReadOnlyArray<any>,
   +employer: {|
     +logo_urls: ?{|
       '+90': string,
@@ -51,8 +51,7 @@ export type Jobs = $ReadOnlyArray<{|
       +station_name: string,
       +lng: number,
     |},
-    +metro_stations:
-      | $ReadOnlyArray<{|
+    +metro_stations: | $ReadOnlyArray<{|
           +line_name: string,
           +station_id: string,
           +line_id: string,
@@ -60,7 +59,7 @@ export type Jobs = $ReadOnlyArray<{|
           +station_name: string,
           +lng: number,
         |}>
-      | $ReadOnlyArray<any /* FIXME: Type could not be determined */>
+      | $ReadOnlyArray<any>
       | $ReadOnlyArray<{|
           +line_name: string,
           +station_id: string,

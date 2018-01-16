@@ -17,15 +17,13 @@ export default class Nav extends React.Component<Props, void> {
 
     return (
       <div className="row flex-center align-bottom">
-        {pages.map(page => {
-          return (
-            <Link to={`/${city}/${page}`} key={`${city}${page}`}>
-              <button className="btn-small">
-                {page}
-              </button>
-            </Link>
-          );
-        })}
+        {pages.map(page => (
+          <Link to={`/${city}/${page}`} key={`${city}${page}`}>
+            <button className="btn-small">
+              {page}
+            </button>
+          </Link>
+          ))}
       </div>
     );
   }

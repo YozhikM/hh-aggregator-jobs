@@ -89,7 +89,7 @@ export default class Page extends React.Component<Props, State> {
       .then(res => res.json())
       .then(data => {
         const { items, pages } = data || {};
-        localStorage.setItem(`pages_${city}`, JSON.stringify(pages));
+        localStorage.setItem(`pages_city`, JSON.stringify(pages));
         this.setState(
           {
             jobs: items,
