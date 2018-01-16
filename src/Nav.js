@@ -1,6 +1,7 @@
 /* @flow */
 
 import * as React from 'react';
+import { Link } from 'react-router';
 import 'papercss/dist/paper.min.css';
 
 type Props = {
@@ -25,15 +26,17 @@ export default class Nav extends React.Component<Props, void> {
       <div className="row flex-center align-bottom">
         {pagesArray.map(page => {
           return (
-            <button
-              className="btn-small"
-              key={page}
-              onClick={() => {
-                if (this.props.onClick) this.props.onClick(page);
-              }}
-            >
-              {page}
-            </button>
+            <Link to={`/${page}`}>
+              <button
+                className="btn-small"
+                key={page}
+                onClick={() => {
+                  if (this.props.onClick) this.props.onClick(page);
+                }}
+              >
+                {page}
+              </button>
+            </Link>
           );
         })}
       </div>

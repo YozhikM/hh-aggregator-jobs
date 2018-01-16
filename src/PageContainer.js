@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import 'papercss/dist/paper.min.css';
+import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import Page from './Page';
 import Nav from './Nav';
 import Select from './Select';
@@ -18,14 +19,12 @@ type State = {
 };
 
 export default class PageContainer extends React.Component<Props, State> {
-  onChange: Function;
-  fetchData: Function;
+  initializeArray: Function;
 
   constructor(props: Props) {
     super(props);
 
-    this.onChange = this.onChange.bind(this);
-    this.fetchData = this.fetchData.bind(this);
+    this.initializeArray = this.initializeArray.bind(this);
     this.state = {
       isLoading: true,
       city: 160,
@@ -34,49 +33,39 @@ export default class PageContainer extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.fetchData();
+    const { city } = this.state;
+    const item = localStorage.getItem(`pages_${city}`);
+    if (item) this.setState({ pages: JSON.parse(item) });
   }
 
-
-  fetchData(page: number = 1, perPage: number = 9) {
-    const { query, city } = this.state;
-    const queryString = query.length > 1 ? query.join('+') : query.join('');
-    fetch(
-      `https://api.hh.ru/vacancies?text=${queryString}&area=${city}&per_page=${perPage}&page=${page}&order_by=publication_time`
-    )
-      .then(res => res.json())
-      .then(data => {
-        const { items, pages } = data || {};
-        this.setState(
-          {
-            jobs: items,
-            pages,
-            isLoading: false,
-          },
-          () => {
-            if (document.body) document.body.scrollTop = 0;
-          }
-        );
-      })
-      .catch(err => console.log(err));
-  }
-
-  onChange(id: number) {
-    if (id) this.setState({ city: id }, () => this.fetchData());
+  initializeArray(start: number = 1, step: number = 1) {
+    const { pages } = this.state;
+    return Array.from({ length: Math.ceil((pages + 1 - start) / step) }).map(
+      (v, i) => i * step + start
+    );
   }
 
   render() {
-    const { jobs, isLoading, pages } = this.state;
+    const { jobs, isLoading, pages = 1, city } = this.state;
+    const pagesArray = this.initializeArray();
 
-    if (!isLoading)
-      return (
+    return (
+      <Router>
         <div>
-          <Select onChange={this.onChange} />
-          <Page jobs={jobs} />
-          <Nav pages={pages} onClick={this.fetchData} />
+          <div className="row flex-center align-bottom">
+            {pagesArray.map(page => {
+              return (
+                <Link to={`/${city}/${page}`} key={`${city}${page}`}>
+                  <button className="btn-small">
+                    {page}
+                  </button>
+                </Link>
+              );
+            })}
+          </div>
+          <Route path="/:city/:page" component={Page} />
         </div>
-      );
-
-    return 'null';
+      </Router>
+    );
   }
 }

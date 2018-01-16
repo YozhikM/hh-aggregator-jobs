@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PageContainer from './PageContainer';
+import App from './App';
 
 // $FlowFixMe
-ReactDOM.render(<PageContainer />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

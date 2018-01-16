@@ -3,8 +3,15 @@
 import * as React from 'react';
 import 'papercss/dist/paper.min.css';
 import { type Jobs } from './type';
+import { type RouterHistory } from '../flow-typed/npm/react-router-dom_v4.x.x'
 
 type Props = {
+  location: RouterHistory,
+};
+
+type State = {
+  city: string | number,
+  page: string | number,
   jobs?: Jobs,
 };
 
@@ -25,17 +32,71 @@ const badges = [
   { name: 'junior', color: 'success' },
 ];
 
-export default class Page extends React.Component<Props, void> {
+export default class Page extends React.Component<Props, State> {
+  fetchData: Function;
+  getSalary: Salary => string;
+  getBadges: string => React.Node;
+
+  constructor(props: Props) {
+    super(props);
+
+    this.getSalary = this.getSalary.bind(this);
+    this.fetchData = this.fetchData.bind(this);
+    this.getBadges = this.getBadges.bind(this);
+
+    const { location } = this.props;
+    const { pathname: path } = location || {};
+    if (path) {
+      const pathArr = path.split('/').filter(Boolean);
+      this.state = {
+        city: pathArr[0],
+        page: pathArr[1],
+      };
+    } else {
+      this.state = {
+        city: 160,
+        page: 1,
+      };
+    }
+
+    this.fetchData();
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.location.pathname !== this.props.location.pathname) this.fetchData();
+  }
+
+  fetchData(perPage: number = 9) {
+    const { city, page } = this.state;
+    fetch(
+      `https://api.hh.ru/vacancies?text=frontend+javascript&area=${city}&per_page=${perPage}&page=${page}&order_by=publication_time`
+    )
+      .then(res => res.json())
+      .then(data => {
+        const { items, pages } = data || {};
+        localStorage.setItem(`pages_${city}`, JSON.stringify(pages));
+        this.setState(
+          {
+            jobs: items,
+          },
+          () => {
+            if (document.body) document.body.scrollTop = 0;
+          }
+        );
+      })
+      .catch(err => console.log(err));
+  }
+
   getSalary(salary: Salary): string {
     const { from, to, currency } = salary || {};
 
     if (from && to && currency) return `от ${from} до ${to} ${currency}`;
     if (from && !to && currency) return `от ${from} ${currency}`;
-    if (!from && to && currency) return `${to} ${currency}`;
+    if (!from && to && currency) return `до ${to} ${currency}`;
     return `не указана`;
   }
 
-  getBadges(string: string) {
+  getBadges(string: string): React.Node {
     const arr = badges
       .map(badge => {
         const reg = new RegExp(badge.name, 'gi');
@@ -56,14 +117,13 @@ export default class Page extends React.Component<Props, void> {
   }
 
   render() {
-    const { jobs } = this.props;
+    const { jobs } = this.state;
     if (!jobs) return null;
 
     return (
       <div className="row">
         {jobs.map(job => {
-          const { id, alternate_url: jobUrl, name, salary, employer, snippet } = job || {};
-
+          const { id, name, salary, snippet, employer, alternate_url: jobUrl } = job || {};
           const { requirement, responsibility } = snippet || {};
           const { alternate_url: companyUrl, name: companyName } = employer || {};
 
