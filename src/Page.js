@@ -1,9 +1,9 @@
 /* @flow */
 
 import * as React from 'react';
+import { type Location, type RouterHistory } from 'react-router-dom';
 import 'papercss/dist/paper.min.css';
 import { type Jobs } from './type';
-import { type Location, type RouterHistory } from 'react-router-dom';
 
 type Props = {
   history: RouterHistory,
@@ -34,10 +34,6 @@ const badges = [
 ];
 
 export default class Page extends React.Component<Props, State> {
-  fetchData: Function;
-  getSalary: Salary => string;
-  getBadges: string => React.Node;
-
   constructor(props: Props) {
     super(props);
 
@@ -48,7 +44,7 @@ export default class Page extends React.Component<Props, State> {
     const { location, history } = this.props;
     const { pathname: path } = location || {};
     if (path !== '/') {
-      const { city, page } = this.getRouteDate(path);
+      const { city, page } = this.getRouteDate();
       this.state = {
         city,
         page,
@@ -64,14 +60,14 @@ export default class Page extends React.Component<Props, State> {
     this.fetchData();
   }
 
-  componentDidUpdate(nextProps: Props) {
+  componentWillReceiveProps(nextProps: Props) {
     if (nextProps.location.pathname !== this.props.location.pathname) {
-      const { city, page } = this.getRouteDate(nextProps.location.pathname);
+      const { city, page } = this.getRouteDate();
       this.setState({ city, page }, () => this.fetchData());
     }
   }
 
-  getRouteDate(pathname: string): { city: string | number, page: string | number } {
+  getRouteDate(): { city: string | number, page: string | number } {
     const { location } = this.props;
     const { pathname: path } = location || {};
     const pathArr = [];
@@ -80,6 +76,43 @@ export default class Page extends React.Component<Props, State> {
     }
     return { city: pathArr[0], page: pathArr[1] };
   }
+
+  getSalary(salary: Salary): string {
+    const { from, to, currency } = salary || {};
+
+    if (from && to && currency) return `от ${from} до ${to} ${currency}`;
+    if (from && !to && currency) return `от ${from} ${currency}`;
+    if (!from && to && currency) return `до ${to} ${currency}`;
+    return `не указана`;
+  }
+
+  getSalary: Salary => string;
+
+  getBadges: string => React.Node;
+
+  getBadges(string: string): ?React.Node {
+    const arr = badges
+      .map(badge => {
+        const reg = new RegExp(badge.name, 'gi');
+        if (string.match(reg)) return badge;
+        return null;
+      })
+      .filter(Boolean);
+    if (arr.length > 0) {
+      return (
+        <div>
+          {arr.map(a => (
+            <span key={a.name} style={{ marginRight: '10px' }} className={`badge ${a.color}`}>
+              {a.name}
+            </span>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  }
+
+  fetchData: Function;
 
   fetchData(perPage: number = 9) {
     const { city, page } = this.state;
@@ -99,36 +132,7 @@ export default class Page extends React.Component<Props, State> {
           }
         );
       })
-      .catch(err => console.log(err));
-  }
-
-  getSalary(salary: Salary): string {
-    const { from, to, currency } = salary || {};
-
-    if (from && to && currency) return `от ${from} до ${to} ${currency}`;
-    if (from && !to && currency) return `от ${from} ${currency}`;
-    if (!from && to && currency) return `до ${to} ${currency}`;
-    return `не указана`;
-  }
-
-  getBadges(string: string): React.Node {
-    const arr = badges
-      .map(badge => {
-        const reg = new RegExp(badge.name, 'gi');
-        if (string.match(reg)) return badge;
-      })
-      .filter(Boolean);
-    if (arr.length > 0) {
-      return (
-        <div>
-          {arr.map(a => (
-            <span key={a.name} style={{ marginRight: '10px' }} className={`badge ${a.color}`}>
-              {a.name}
-            </span>
-          ))}
-        </div>
-      );
-    }
+      .catch(err => console.log(err)); // eslint-disable-line
   }
 
   render() {

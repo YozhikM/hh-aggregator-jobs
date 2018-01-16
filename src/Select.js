@@ -15,19 +15,20 @@ const options = [
 ];
 
 export default class Select extends React.Component<Props, void> {
-  _select: ?HTMLSelectElement;
-  onChange: Function;
-
   constructor(props: Props) {
     super(props);
 
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange(e: Event) {
+  onChange: Function;
+
+  onChange() {
     const { onChange } = this.props;
-    if (onChange && this._select) onChange(this._select.value);
+    if (onChange && this.$select) onChange(this.$select.value);
   }
+
+  $select: ?HTMLSelectElement;
 
   render() {
     return (
@@ -37,7 +38,7 @@ export default class Select extends React.Component<Props, void> {
           <select
             id="city"
             ref={select => {
-              this._select = select;
+              this.$select = select;
             }}
             onChange={this.onChange}
           >

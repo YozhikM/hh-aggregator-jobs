@@ -4,38 +4,33 @@ import * as React from 'react';
 import 'papercss/dist/paper.min.css';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import Page from './Page';
-import Nav from './Nav';
 import { type Jobs } from './type';
 
 type Props = {};
 
 type State = {
-  query: Array<string>,
   city: number,
-  isLoading: boolean,
+  isLoading?: boolean,
   pages?: number,
   jobs?: Jobs,
 };
 
 export default class PageContainer extends React.Component<Props, State> {
-  initializeArray: Function;
-
   constructor(props: Props) {
     super(props);
 
     this.initializeArray = this.initializeArray.bind(this);
     this.state = {
-      isLoading: true,
       city: 160,
-      query: ['javascript', 'frontend'],
     };
   }
 
-  componentDidMount() {
-    const { city } = this.state;
+  componentWillMount() {
     const item = localStorage.getItem(`pages_city`);
     if (item) this.setState({ pages: JSON.parse(item) });
   }
+
+  initializeArray: Function;
 
   initializeArray(start: number = 1, step: number = 1): Array<number> {
     const { pages = 1 } = this.state;
@@ -45,7 +40,7 @@ export default class PageContainer extends React.Component<Props, State> {
   }
 
   render() {
-    const { jobs, isLoading, pages = 1, city } = this.state;
+    const { city } = this.state;
     const pagesArray = this.initializeArray();
 
     return (
@@ -59,7 +54,7 @@ export default class PageContainer extends React.Component<Props, State> {
               <Link to={`/${city}/${page}`} key={`${city}${page}`}>
                 <button className="btn-small">{page}</button>
               </Link>
-              ))}
+            ))}
           </div>
         </div>
       </Router>
