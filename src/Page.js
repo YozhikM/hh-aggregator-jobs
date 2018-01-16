@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { type Location, type RouterHistory } from 'react-router-dom';
 import 'papercss/dist/paper.min.css';
-import { type Jobs } from './type';
+import { type Jobs } from './Type';
 
 type Props = {
   history: RouterHistory,
@@ -132,7 +132,7 @@ export default class Page extends React.Component<Props, State> {
           }
         );
       })
-      .catch(err => console.log(err)); // eslint-disable-line
+      .catch(err => console.log(err));
   }
 
   render() {

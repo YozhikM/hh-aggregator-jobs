@@ -4,7 +4,7 @@ import * as React from 'react';
 import 'papercss/dist/paper.min.css';
 import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import Page from './Page';
-import { type Jobs } from './type';
+import { type Jobs } from './Type';
 
 type Props = {};
 
