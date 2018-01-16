@@ -9,22 +9,22 @@ type Props = {
   city?: number,
 };
 
-export default class Nav extends React.Component<Props, void> {
+export default function Nav(props: Props) {
+  const { pages, city } = props;
+  if (!pages || !city) return null;
 
-  render() {
-    const { pages, city } = this.props;
-    if (!pages || !city) return null;
-
-    return (
-      <div className="row flex-center align-bottom">
-        {pages.map(page => (
-          <Link to={`/${city}/${page}`} key={`${city}${page}`}>
-            <button className="btn-small">
-              {page}
-            </button>
-          </Link>
-          ))}
-      </div>
-    );
-  }
+  return (
+    <div className="row flex-center align-bottom">
+      {pages.map(page => (
+        <Link to={`/${city}/${page}`} key={`${city}${page}`}>
+          <button className="btn-small">{page}</button>
+        </Link>
+      ))}
+    </div>
+  );
 }
+
+Nav.defaultProps = {
+  pages: [1],
+  city: 160,
+};

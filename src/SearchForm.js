@@ -8,13 +8,13 @@ type Props = {
 };
 
 export default class SearchForm extends React.Component<Props, void> {
-  onChange: Function;
-
   constructor(props: Props) {
     super(props);
 
     this.onChange = this.onChange.bind(this);
   }
+
+  onChange: Function;
 
   onChange(e: SyntheticInputEvent<>) {
     const { onChange } = this.props;
