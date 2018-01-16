@@ -39,8 +39,8 @@ export default class PageContainer extends React.Component<Props, State> {
   }
 
   initializeArray(start: number = 1, step: number = 1) {
-    const { pages } = this.state;
-    return Array.from({ length: Math.ceil((pages + 1 - start) / step) }).map(
+    const { pages = 1 } = this.state;
+    return Array.from({ length: Math.ceil((pages - start) / step) }).map(
       (v, i) => i * step + start
     );
   }
@@ -63,6 +63,7 @@ export default class PageContainer extends React.Component<Props, State> {
               );
             })}
           </div>
+          <Route exact path="/" component={Page} />
           <Route path="/:city/:page" component={Page} />
         </div>
       </Router>

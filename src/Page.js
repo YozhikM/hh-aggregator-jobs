@@ -3,10 +3,11 @@
 import * as React from 'react';
 import 'papercss/dist/paper.min.css';
 import { type Jobs } from './type';
-import { type RouterHistory } from '../flow-typed/npm/react-router-dom_v4.x.x'
+import { type Location, type RouterHistory } from 'react-router-dom';
 
 type Props = {
-  location: RouterHistory,
+  history: RouterHistory,
+  location: Location,
 };
 
 type State = {
@@ -44,15 +45,16 @@ export default class Page extends React.Component<Props, State> {
     this.fetchData = this.fetchData.bind(this);
     this.getBadges = this.getBadges.bind(this);
 
-    const { location } = this.props;
+    const { location, history } = this.props;
     const { pathname: path } = location || {};
-    if (path) {
-      const pathArr = path.split('/').filter(Boolean);
+    if (path !== '/') {
+      const { city, page } = this.getRouteDate(path);
       this.state = {
-        city: pathArr[0],
-        page: pathArr[1],
+        city,
+        page,
       };
     } else {
+      history.push('160/1');
       this.state = {
         city: 160,
         page: 1,
@@ -62,8 +64,21 @@ export default class Page extends React.Component<Props, State> {
     this.fetchData();
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.location.pathname !== this.props.location.pathname) this.fetchData();
+  componentDidUpdate(nextProps: Props) {
+    if (nextProps.location.pathname !== this.props.location.pathname) {
+      const { city, page } = this.getRouteDate(nextProps.location.pathname);
+      this.setState({ city, page }, () => this.fetchData());
+    }
+  }
+
+  getRouteDate(pathname: string): { city: string | number, page: string | number } {
+    const { location } = this.props;
+    const { pathname: path } = location || {};
+    const pathArr = [];
+    if (path) {
+      pathArr.push(...path.split('/').filter(Boolean));
+    }
+    return { city: pathArr[0], page: pathArr[1] };
   }
 
   fetchData(perPage: number = 9) {
