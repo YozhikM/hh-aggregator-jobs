@@ -4,7 +4,7 @@ import * as React from 'react';
 import 'papercss/dist/paper.min.css';
 
 type Props = {
-  onChange: Function,
+  onSelect: Function,
 };
 
 const options = [
@@ -18,14 +18,14 @@ export default class Select extends React.Component<Props, void> {
   constructor(props: Props) {
     super(props);
 
-    this.onChange = this.onChange.bind(this);
+    this.onSelect = this.onSelect.bind(this);
   }
 
-  onChange: Function;
+  onSelect: Function;
 
-  onChange() {
-    const { onChange } = this.props;
-    if (onChange && this.$select) onChange(this.$select.value);
+  onSelect() {
+    const { onSelect } = this.props;
+    if (onSelect && this.$select) onSelect(this.$select.value);
   }
 
   $select: ?HTMLSelectElement;
@@ -40,7 +40,7 @@ export default class Select extends React.Component<Props, void> {
             ref={select => {
               this.$select = select;
             }}
-            onChange={this.onChange}
+            onChange={this.onSelect}
           >
             {options.map(option => {
               const { id, value } = option || {};
