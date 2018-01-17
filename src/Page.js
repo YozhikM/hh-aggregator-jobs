@@ -1,12 +1,14 @@
 /* @flow */
 
 import * as React from 'react';
-import { type Location, type RouterHistory, Link } from 'react-router-dom';
+import { type RouterHistory, type Match, Link } from 'react-router-dom';
 import 'papercss/dist/paper.min.css';
+import Select from './Select';
 import { type Jobs } from './Type';
 
 type Props = {|
   history: RouterHistory,
+  match: Match,
   location: Location,
 |};
 
@@ -15,6 +17,7 @@ type State = {
   page: string | number,
   pages?: number,
   jobs?: Jobs,
+  perPage?: number,
 };
 
 type Salary = ?{|
@@ -23,8 +26,6 @@ type Salary = ?{|
   +from: ?number,
   +currency: string,
 |};
-
-type RouteData = { city: string | number, page: string | number };
 
 const badges = [
   { name: 'react', color: 'success' },
@@ -43,13 +44,14 @@ export default class Page extends React.Component<Props, State> {
     this.getSalary = this.getSalary.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.getBadges = this.getBadges.bind(this);
-    this.getRouteDate = this.getRouteDate.bind(this);
+    this.onSelect = this.onSelect.bind(this);
     this.initializeArray = this.initializeArray.bind(this);
 
-    const { location, history } = this.props;
-    const { pathname: path } = location || {};
-    if (path !== '/') {
-      const { city, page } = this.getRouteDate(path);
+    const { history, match } = this.props;
+    const { params } = match || {};
+    const { city, page } = params || {};
+
+    if (city && page) {
       this.state = {
         city,
         page,
@@ -61,25 +63,24 @@ export default class Page extends React.Component<Props, State> {
         page: 1,
       };
     }
-
     this.fetchData();
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.location.pathname !== this.props.location.pathname) {
-      const { city, page } = this.getRouteDate(nextProps.location.pathname);
-      this.setState({ city, page }, () => this.fetchData());
+    if (nextProps.match.params !== this.props.match.params) {
+      const { match } = nextProps;
+      const { params } = match || {};
+      const { city, page } = params || {};
+      if (city && page) this.setState({ city, page }, () => this.fetchData());
     }
   }
 
-  getRouteDate: string => RouteData;
+  onSelect: string => void;
 
-  getRouteDate(path: string): RouteData {
-    const pathArr = [];
-    if (path) {
-      pathArr.push(...path.split('/').filter(Boolean));
-    }
-    return { city: pathArr[0], page: pathArr[1] };
+  onSelect(city: string) {
+    this.setState({ city, page: 1 }, () => {
+      this.fetchData();
+    });
   }
 
   getSalary: Salary => string;
@@ -119,8 +120,18 @@ export default class Page extends React.Component<Props, State> {
 
   fetchData: Function;
 
-  fetchData(perPage: number = 9) {
+  fetchData() {
     const { city, page } = this.state;
+
+    let perPage = 0;
+
+    if (document.body) {
+      const cw = document.body.clientWidth;
+      if (cw <= 768) perPage = 6;
+      if (cw >= 769 && cw <= 1199) perPage = 8;
+      if (cw >= 1200) perPage = 9;
+    }
+
     const url = `https://api.hh.ru/vacancies?text=frontend+javascript&area=${city}&per_page=${perPage}&page=${page}&order_by=publication_time`;
     fetch(url)
       .then(res => res.json())
@@ -155,6 +166,7 @@ export default class Page extends React.Component<Props, State> {
 
     return (
       <div>
+        <Select onSelect={this.onSelect} />
         <div className="row">
           {jobs.map(job => {
             const { id, name, salary, snippet, employer, alternate_url: jobUrl } = job || {};
@@ -162,7 +174,7 @@ export default class Page extends React.Component<Props, State> {
             const { alternate_url: companyUrl, name: companyName } = employer || {};
 
             return (
-              <div className="sm-1 md-3 lg-4 col align-top" key={id}>
+              <div className="sm-12 md-6 lg-4 col align-top" key={id}>
                 <div className="card">
                   <div className="card-header">
                     {this.getBadges(name + requirement + (responsibility || ''))}
