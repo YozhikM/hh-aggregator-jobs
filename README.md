@@ -1,10 +1,8 @@
-# 
-Aggregator of vacancies with HH on personal request
+#
+Aggregator of jobs with HH on personal request
 
-## Start
+The application was written in order to make it as easy as possible to view the current vacancies for the query of interest to me.
 
-`npm install`
+## How to see it
 
-`npm start`
-
-Go to `localhost:3000`
+Go to http://mysolaris.xyz/hh-aggr/

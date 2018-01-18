@@ -39,5 +39,9 @@
     "eslint-plugin-unicorn": "^3.0.1",
     "flow-bin": "^0.63.1",
     "parcel-bundler": "^1.4.1"
+  },
+  "peerDependencies": {
+    "eslint-plugin-node": "^5.2.1",
+    "prettier": "^1.10.2"
   }
 }
