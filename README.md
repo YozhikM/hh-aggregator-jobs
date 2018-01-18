@@ -1,4 +1,5 @@
-#
+# HH aggregator jobs
+
 Aggregator of jobs with HH on personal request
 
 The application was written in order to make it as easy as possible to view the current vacancies for the query of interest to me.
@@ -6,3 +7,5 @@ The application was written in order to make it as easy as possible to view the 
 ## How to see it
 
 Go to http://mysolaris.xyz/hh-aggr/
+
+![HH Aggregator](https://i.imgur.com/qbCBIvA.png)
