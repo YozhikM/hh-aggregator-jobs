@@ -3,18 +3,21 @@
   "version": "1.0.0",
   "description": "Aggregator vacancies",
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html",
+    "oldstart": "parcel index.html",
+    "start": "serve --single ./build",
+    "buildold": "parcel build index.html",
     "lint": "./node_modules/.bin/eslint src/"
   },
   "author": "Stanislav Botev",
   "license": "MIT",
   "dependencies": {
+    "micro": "latest",
     "papercss": "^1.4.1",
+    "parcel-bundler": "^1.4.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-router": "^4.2.0",
-    "react-router-dom": "^4.2.2"
+    "react-router-dom": "^4.2.2",
+    "serve": "^6.4.8"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -37,8 +40,7 @@
     "eslint-plugin-react": "^7.5.1",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-unicorn": "^3.0.1",
-    "flow-bin": "^0.63.1",
-    "parcel-bundler": "^1.4.1"
+    "flow-bin": "^0.63.1"
   },
   "peerDependencies": {
     "eslint-plugin-node": "^5.2.1",

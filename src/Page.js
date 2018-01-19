@@ -18,6 +18,7 @@ type State = {
   pages?: number,
   jobs?: Jobs,
   perPage?: number,
+  count?: number,
 };
 
 type Salary = ?{|
@@ -132,14 +133,15 @@ export default class Page extends React.Component<Props, State> {
       if (cw >= 1200) perPage = 9;
     }
 
-    const url = `https://api.hh.ru/vacancies?text=frontend+javascript&area=${city}&per_page=${perPage}&page=${page}&order_by=publication_time`;
+    const url = `https://api.hh.ru/vacancies?text=javascript&area=${city}&per_page=${perPage}&page=${page}&order_by=publication_time`;
     fetch(url)
       .then(res => res.json())
       .then(data => {
-        const { items, pages } = data || {};
+        const { items, pages, found } = data || {};
         this.setState(
           {
             jobs: items,
+            count: found,
             pages,
           },
           () => {
@@ -160,13 +162,20 @@ export default class Page extends React.Component<Props, State> {
   }
 
   render() {
-    const { jobs, city } = this.state;
+    const { jobs, city, count } = this.state;
     const pagesArray = this.initializeArray();
     if (!jobs) return null;
 
     return (
       <div>
         <Select onSelect={this.onSelect} />
+
+        {count && (
+          <div className="row flex-center">
+            <span className="badge">{`${count} jobs`}</span>
+          </div>
+        )}
+
         <div className="row">
           {jobs.map(job => {
             const { id, name, salary, snippet, employer, alternate_url: jobUrl } = job || {};
