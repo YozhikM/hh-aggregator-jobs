@@ -1,6 +1,9 @@
 /* @flow */
 
+import * as React from 'react';
+
 export type Jobs = $ReadOnlyArray<{|
+  fullDescription?: React.Node,
   +salary: ?{|
     +to: ?number,
     +gross: boolean,

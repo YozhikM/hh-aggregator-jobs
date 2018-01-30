@@ -4,12 +4,12 @@ import * as React from 'react';
 import { type RouterHistory, type Match, Link } from 'react-router-dom';
 import 'papercss/dist/paper.min.css';
 import Select from './Select';
+import Card from './Card';
 import { type Jobs } from './Type';
 
 type Props = {|
   history: RouterHistory,
   match: Match,
-  location: Location,
 |};
 
 type State = {
@@ -21,30 +21,12 @@ type State = {
   count?: number,
 };
 
-type Salary = ?{|
-  +to: ?number,
-  +gross: boolean,
-  +from: ?number,
-  +currency: string,
-|};
-
-const badges = [
-  { name: 'react', color: 'success' },
-  { name: 'javascript', color: 'secondary' },
-  { name: 'vue', color: 'secondary' },
-  { name: 'angular', color: 'secondary' },
-  { name: 'jquery', color: 'warning' },
-  { name: 'php', color: 'danger' },
-  { name: 'junior', color: 'success' },
-];
-
 export default class Page extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.getSalary = this.getSalary.bind(this);
     this.fetchData = this.fetchData.bind(this);
-    this.getBadges = this.getBadges.bind(this);
+    this.fetchJob = this.fetchJob.bind(this);
     this.onSelect = this.onSelect.bind(this);
     this.initializeArray = this.initializeArray.bind(this);
 
@@ -84,41 +66,6 @@ export default class Page extends React.Component<Props, State> {
     });
   }
 
-  getSalary: Salary => string;
-
-  getSalary(salary: Salary): string {
-    const { from, to, currency } = salary || {};
-
-    if (from && to && currency) return `от ${from} до ${to} ${currency}`;
-    if (from && !to && currency) return `от ${from} ${currency}`;
-    if (!from && to && currency) return `до ${to} ${currency}`;
-    return `не указана`;
-  }
-
-  getBadges: string => React.Node;
-
-  getBadges(string: string): ?React.Node {
-    const arr = badges
-      .map(badge => {
-        const reg = new RegExp(badge.name, 'gi');
-        if (string.match(reg)) return badge;
-        return null;
-      })
-      .filter(Boolean);
-    if (arr.length > 0) {
-      return (
-        <div>
-          {arr.map(a => (
-            <span key={a.name} style={{ marginRight: '10px' }} className={`badge ${a.color}`}>
-              {a.name}
-            </span>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  }
-
   fetchData: Function;
 
   fetchData() {
@@ -133,7 +80,7 @@ export default class Page extends React.Component<Props, State> {
       if (cw >= 1200) perPage = 9;
     }
 
-    const url = `https://api.hh.ru/vacancies?text=javascript&area=${city}&per_page=${perPage}&page=${page}&order_by=publication_time`;
+    const url = `https://api.hh.ru/vacancies?text=javascript+frontend&area=${city}&per_page=${perPage}&page=${page}`;
     fetch(url)
       .then(res => res.json())
       .then(data => {
@@ -161,6 +108,26 @@ export default class Page extends React.Component<Props, State> {
     );
   }
 
+  fetchJob: (string, number) => void;
+
+  fetchJob(jobUrl: string, index: number) {
+    fetch(jobUrl)
+      .then(res => res.json())
+      .then(data => {
+        const { jobs } = this.state;
+        if (!jobs) return;
+
+        const { description } = data || {};
+        const newJob = jobs[index];
+        newJob.fullDescription = description;
+        const copyJobs = jobs.slice();
+        copyJobs.splice(index, 1, newJob);
+
+        this.setState({ jobs: copyJobs });
+      })
+      .catch(err => console.log(err));
+  }
+
   render() {
     const { jobs, city, count } = this.state;
     const pagesArray = this.initializeArray();
@@ -177,51 +144,9 @@ export default class Page extends React.Component<Props, State> {
         )}
 
         <div className="row">
-          {jobs.map(job => {
-            const { id, name, salary, snippet, employer, alternate_url: jobUrl } = job || {};
-            const { requirement, responsibility } = snippet || {};
-            const { alternate_url: companyUrl, name: companyName } = employer || {};
-
-            return (
-              <div className="sm-12 md-6 lg-4 col align-top" key={id}>
-                <div className="card">
-                  <div className="card-header">
-                    {this.getBadges(name + requirement + (responsibility || ''))}
-                    <h4 className="card-subtitle" style={{ fontFamily: '"Neucha",sans-serif' }}>
-                      {name}
-                    </h4>
-                    <p className="card-text">
-                      <strong>Зарплата: </strong>
-                      {this.getSalary(salary)}
-                    </p>
-                  </div>
-                  <div className="card-body">
-                    <a href={companyUrl} className="card-text">
-                      {companyName}
-                    </a>
-                    <div className="margin">
-                      {requirement && (
-                        <div>
-                          <strong>Требования: </strong>
-                          <p className="card-text">{requirement.replace(/<[^>]+>/g, '')}</p>
-                        </div>
-                      )}
-                      {responsibility && (
-                        <div>
-                          <strong>Обязанности: </strong>
-                          <p className="card-text">{responsibility.replace(/<[^>]+>/g, '')}</p>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-center row">
-                      <a href={jobUrl} target="_blank" className="paper-btn">
-                        Откликнуться
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
+          {jobs.map((job, i) => {
+            const { id } = job || {};
+            return <Card key={id} job={job} index={i} fetchJob={this.fetchJob} />;
           })}
         </div>
         <div className="row flex-center align-bottom">
