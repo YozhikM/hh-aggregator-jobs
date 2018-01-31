@@ -1,10 +1,11 @@
 /* @flow */
 
 import * as React from 'react';
-import { type RouterHistory, type Match, Link } from 'react-router-dom';
+import { type RouterHistory, type Match } from 'react-router-dom';
 import 'papercss/dist/paper.min.css';
 import Select from './Select';
-import Card from './Card';
+import JobItem from './JobItem';
+import Pagination from './Pagination';
 import { type Jobs } from './Type';
 
 type Props = {|
@@ -80,7 +81,7 @@ export default class Page extends React.Component<Props, State> {
       if (cw >= 1200) perPage = 9;
     }
 
-    const url = `https://api.hh.ru/vacancies?text=javascript+frontend&area=${city}&per_page=${perPage}&page=${page}`;
+    const url = `https://api.hh.ru/vacancies?text=frontend&area=${city}&per_page=${perPage}&page=${page}`;
     fetch(url)
       .then(res => res.json())
       .then(data => {
@@ -117,6 +118,8 @@ export default class Page extends React.Component<Props, State> {
         const { jobs } = this.state;
         if (!jobs) return;
 
+        console.log('data: ', data);
+
         const { description } = data || {};
         const newJob = jobs[index];
         newJob.fullDescription = description;
@@ -146,15 +149,11 @@ export default class Page extends React.Component<Props, State> {
         <div className="row">
           {jobs.map((job, i) => {
             const { id } = job || {};
-            return <Card key={id} job={job} index={i} fetchJob={this.fetchJob} />;
+            return <JobItem key={id} job={job} index={i} fetchJob={this.fetchJob} />;
           })}
         </div>
         <div className="row flex-center align-bottom">
-          {pagesArray.map(page => (
-            <Link to={`/${city}/${page}`} key={`${city}${page}`}>
-              <button className="btn-small">{page}</button>
-            </Link>
-          ))}
+          <Pagination pagesArray={pagesArray} city={city} />
         </div>
       </div>
     );

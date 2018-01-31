@@ -31,7 +31,7 @@ type State = {
   isFullDescription: boolean,
 };
 
-export default class Card extends React.Component<Props, State> {
+export default class JobItem extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
