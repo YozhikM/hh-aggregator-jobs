@@ -5,6 +5,7 @@ import { type RouterHistory, type Match } from 'react-router-dom';
 import 'papercss/dist/paper.min.css';
 import Select from './Select';
 import JobItem from './JobItem';
+import Checkboxes from './Checkboxes';
 import Pagination from './Pagination';
 import { type Jobs } from './type';
 
@@ -19,6 +20,7 @@ type State = {
   jobs?: Jobs,
   perPage?: number,
   count?: number,
+  query: string,
 };
 
 export default class Page extends React.Component<Props, State> {
@@ -29,6 +31,7 @@ export default class Page extends React.Component<Props, State> {
     this.onSelect = this.onSelect.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.initializeArray = this.initializeArray.bind(this);
+    this.onChangeCheckbox = this.onChangeCheckbox.bind(this);
 
     const { history, match } = this.props;
     const { params } = match || {};
@@ -37,11 +40,13 @@ export default class Page extends React.Component<Props, State> {
     if (page) {
       this.state = {
         page,
+        query: 'frontend',
       };
     } else {
       history.push('160-1');
       this.state = {
         page: '160-1',
+        query: 'frontend',
       };
     }
     this.fetchData();
@@ -69,7 +74,7 @@ export default class Page extends React.Component<Props, State> {
   fetchData: Function;
 
   fetchData() {
-    const { page } = this.state;
+    const { page, query } = this.state;
 
     let perPage = 0;
 
@@ -83,7 +88,7 @@ export default class Page extends React.Component<Props, State> {
     const city = page.replace(/-\d/gi, '');
     const currentPage = page.replace(/\d+-/gi, '');
 
-    const url = `https://api.hh.ru/vacancies?text=frontend&area=${city}&per_page=${perPage}&page=${currentPage}`;
+    const url = `https://api.hh.ru/vacancies?text=${query}&area=${city}&per_page=${perPage}&page=${currentPage}`;
     fetch(url)
       .then(res => res.json())
       .then(data => {
@@ -132,8 +137,14 @@ export default class Page extends React.Component<Props, State> {
       .catch(err => console.log(err));
   }
 
+  onChangeCheckbox: () => void;
+
+  onChangeCheckbox(query: string) {
+    this.setState({ query }, () => this.fetchData());
+  }
+
   render() {
-    const { jobs, count, page } = this.state;
+    const { jobs, count, page, query } = this.state;
     const city = page.replace(/-\d/gi, '');
     const pagesArray = this.initializeArray();
     if (!jobs) return null;
@@ -141,6 +152,8 @@ export default class Page extends React.Component<Props, State> {
     return (
       <div>
         <Select onSelect={this.onSelect} page={page} />
+
+        <Checkboxes onChange={this.onChangeCheckbox} query={query} />
 
         {count && (
           <div className="row flex-center">
