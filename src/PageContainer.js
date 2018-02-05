@@ -10,7 +10,7 @@ export default function PageContainer() {
     <Router>
       <div>
         <Route exact path="/" component={Page} />
-        <Route path="/:city/:page" component={Page} />
+        <Route path="/:page" component={Page} />
       </div>
     </Router>
   );

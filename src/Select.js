@@ -4,7 +4,12 @@ import * as React from 'react';
 import 'papercss/dist/paper.min.css';
 
 type Props = {
+  page: string,
   onSelect: Function,
+};
+
+type State = {
+  activeOption: string,
 };
 
 const options = [
@@ -21,11 +26,28 @@ const options = [
   { id: 2019, value: 'for the Moscow Ring Road' },
 ];
 
-export default class Select extends React.Component<Props, void> {
+export default class Select extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    this.getPage = this.getPage.bind(this);
     this.onSelect = this.onSelect.bind(this);
+
+    this.state = {
+      activeOption: this.getPage(props.page) || props.page[0],
+    };
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.page !== this.props.page) {
+      this.setState({ activeOption: this.getPage(nextProps.page) });
+    }
+  }
+
+  getPage: string => string;
+
+  getPage(page: string) {
+    return page.replace(/-\d/gi, '');
   }
 
   onSelect: Function;
@@ -38,6 +60,8 @@ export default class Select extends React.Component<Props, void> {
   $select: ?HTMLSelectElement;
 
   render() {
+    const { activeOption } = this.state;
+
     return (
       <div className="row flex-center">
         <div className="form-group margin">
@@ -47,6 +71,7 @@ export default class Select extends React.Component<Props, void> {
             ref={select => {
               this.$select = select;
             }}
+            value={activeOption}
             onChange={this.onSelect}
           >
             {options.map(option => {

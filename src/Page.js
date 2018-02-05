@@ -14,8 +14,7 @@ type Props = {|
 |};
 
 type State = {
-  city: string | number,
-  page: string | number,
+  page: string,
   pages?: number,
   jobs?: Jobs,
   perPage?: number,
@@ -26,26 +25,23 @@ export default class Page extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.fetchData = this.fetchData.bind(this);
     this.fetchJob = this.fetchJob.bind(this);
     this.onSelect = this.onSelect.bind(this);
-    this.onRemove = this.onRemove.bind(this);
+    this.fetchData = this.fetchData.bind(this);
     this.initializeArray = this.initializeArray.bind(this);
 
     const { history, match } = this.props;
     const { params } = match || {};
-    const { city, page } = params || {};
+    const { page } = params || {};
 
-    if (city && page) {
+    if (page) {
       this.state = {
-        city,
         page,
       };
     } else {
-      history.push('160/1');
+      history.push('160-1');
       this.state = {
-        city: 160,
-        page: 1,
+        page: '160-1',
       };
     }
     this.fetchData();
@@ -55,15 +51,17 @@ export default class Page extends React.Component<Props, State> {
     if (nextProps.match.params !== this.props.match.params) {
       const { match } = nextProps;
       const { params } = match || {};
-      const { city, page } = params || {};
-      if (city && page) this.setState({ city, page }, () => this.fetchData());
+      const { page } = params || {};
+      if (page) this.setState({ page }, () => this.fetchData());
     }
   }
 
   onSelect: string => void;
 
   onSelect(city: string) {
-    this.setState({ city, page: 1 }, () => {
+    const { history } = this.props;
+    this.setState({ page: `${city}-1` }, () => {
+      history.replace(`${city}-1`);
       this.fetchData();
     });
   }
@@ -71,7 +69,7 @@ export default class Page extends React.Component<Props, State> {
   fetchData: Function;
 
   fetchData() {
-    const { city, page } = this.state;
+    const { page } = this.state;
 
     let perPage = 0;
 
@@ -82,7 +80,10 @@ export default class Page extends React.Component<Props, State> {
       if (cw >= 1200) perPage = 9;
     }
 
-    const url = `https://api.hh.ru/vacancies?text=frontend&area=${city}&per_page=${perPage}&page=${page}`;
+    const city = page.replace(/-\d/gi, '');
+    const currentPage = page.replace(/\d+-/gi, '');
+
+    const url = `https://api.hh.ru/vacancies?text=frontend&area=${city}&per_page=${perPage}&page=${currentPage}`;
     fetch(url)
       .then(res => res.json())
       .then(data => {
@@ -126,32 +127,20 @@ export default class Page extends React.Component<Props, State> {
         const copyJobs = jobs.slice();
         copyJobs.splice(index, 1, newJob);
 
-        console.log(data);
-
         this.setState({ jobs: copyJobs });
       })
       .catch(err => console.log(err));
   }
 
-  onRemove: number => void;
-
-  onRemove(index: number) {
-    const { jobs } = this.state;
-    if (!jobs) return;
-
-    const newJobs = jobs.slice();
-    newJobs.splice(index, 1);
-    this.setState({ jobs: newJobs });
-  }
-
   render() {
-    const { jobs, city, count } = this.state;
+    const { jobs, count, page } = this.state;
+    const city = page.replace(/-\d/gi, '');
     const pagesArray = this.initializeArray();
     if (!jobs) return null;
 
     return (
       <div>
-        <Select onSelect={this.onSelect} />
+        <Select onSelect={this.onSelect} page={page} />
 
         {count && (
           <div className="row flex-center">
@@ -162,15 +151,7 @@ export default class Page extends React.Component<Props, State> {
         <div className="row">
           {jobs.map((job, i) => {
             const { id } = job || {};
-            return (
-              <JobItem
-                key={id}
-                job={job}
-                index={i}
-                fetchJob={this.fetchJob}
-                onRemove={this.onRemove}
-              />
-            );
+            return <JobItem key={id} job={job} index={i} fetchJob={this.fetchJob} />;
           })}
         </div>
         <div className="row flex-center align-bottom">

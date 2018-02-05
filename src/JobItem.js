@@ -25,7 +25,6 @@ type Props = {|
   job: Object,
   index: number,
   fetchJob: Function,
-  onRemove?: Function,
 |};
 
 type State = {
@@ -37,7 +36,6 @@ export default class JobItem extends React.Component<Props, State> {
     super(props);
 
     this.fetchJob = this.fetchJob.bind(this);
-    this.onRemove = this.onRemove.bind(this);
     this.onRespond = this.onRespond.bind(this);
     this.toggleDescription = this.toggleDescription.bind(this);
 
@@ -123,13 +121,6 @@ export default class JobItem extends React.Component<Props, State> {
     this.setState({ isFullDescription: !this.state.isFullDescription }, () => this.fetchJob());
   }
 
-  onRemove: () => void;
-
-  onRemove() {
-    const { onRemove, index } = this.props;
-    if (onRemove) onRemove(index);
-  }
-
   onRespond: () => void;
 
   onRespond() {
@@ -163,14 +154,6 @@ export default class JobItem extends React.Component<Props, State> {
         <div className="card">
           <div className="card-header">
             {this.getBadges(name + requirement + (responsibility || ''))}
-            <button
-              onClick={this.onRemove}
-              className="btn-small btn-danger"
-              style={{ float: 'right', color: '#a7342d' }}
-            >
-              X
-            </button>
-
             <h4 className="card-subtitle" style={{ fontFamily: '"Neucha",sans-serif' }}>
               {name}
             </h4>
