@@ -4,6 +4,7 @@ import * as React from 'react';
 
 export type Jobs = $ReadOnlyArray<{|
   fullDescription?: React.Node,
+  response?: string,
   +salary: ?{|
     +to: ?number,
     +gross: boolean,
@@ -54,7 +55,8 @@ export type Jobs = $ReadOnlyArray<{|
       +station_name: string,
       +lng: number,
     |},
-    +metro_stations: | $ReadOnlyArray<{|
+    +metro_stations:
+      | $ReadOnlyArray<{|
           +line_name: string,
           +station_id: string,
           +line_id: string,

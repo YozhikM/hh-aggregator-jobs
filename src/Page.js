@@ -6,7 +6,7 @@ import 'papercss/dist/paper.min.css';
 import Select from './Select';
 import JobItem from './JobItem';
 import Pagination from './Pagination';
-import { type Jobs } from './Type';
+import { type Jobs } from './type';
 
 type Props = {|
   history: RouterHistory,
@@ -29,6 +29,7 @@ export default class Page extends React.Component<Props, State> {
     this.fetchData = this.fetchData.bind(this);
     this.fetchJob = this.fetchJob.bind(this);
     this.onSelect = this.onSelect.bind(this);
+    this.onRemove = this.onRemove.bind(this);
     this.initializeArray = this.initializeArray.bind(this);
 
     const { history, match } = this.props;
@@ -118,17 +119,29 @@ export default class Page extends React.Component<Props, State> {
         const { jobs } = this.state;
         if (!jobs) return;
 
-        console.log('data: ', data);
-
-        const { description } = data || {};
+        const { description, apply_alternate_url } = data || {};
         const newJob = jobs[index];
         newJob.fullDescription = description;
+        newJob.response = apply_alternate_url;
         const copyJobs = jobs.slice();
         copyJobs.splice(index, 1, newJob);
+
+        console.log(data);
 
         this.setState({ jobs: copyJobs });
       })
       .catch(err => console.log(err));
+  }
+
+  onRemove: number => void;
+
+  onRemove(index: number) {
+    const { jobs } = this.state;
+    if (!jobs) return;
+
+    const newJobs = jobs.slice();
+    newJobs.splice(index, 1);
+    this.setState({ jobs: newJobs });
   }
 
   render() {
@@ -149,7 +162,15 @@ export default class Page extends React.Component<Props, State> {
         <div className="row">
           {jobs.map((job, i) => {
             const { id } = job || {};
-            return <JobItem key={id} job={job} index={i} fetchJob={this.fetchJob} />;
+            return (
+              <JobItem
+                key={id}
+                job={job}
+                index={i}
+                fetchJob={this.fetchJob}
+                onRemove={this.onRemove}
+              />
+            );
           })}
         </div>
         <div className="row flex-center align-bottom">

@@ -17,7 +17,7 @@ module.exports = {
     'flowtype-errors/enforce-min-coverage': [2, 50],
     'unicorn/catch-error-name': ['error', { name: 'err' }],
     'unicorn/explicit-length-check': 'error',
-    'unicorn/filename-case': ['error', { case: 'pascalCase' }],
+    'unicorn/filename-case': 0,
     'unicorn/no-abusive-eslint-disable': 'error',
     'unicorn/no-process-exit': 'error',
     'unicorn/throw-new-error': 'error',
