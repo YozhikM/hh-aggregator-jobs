@@ -40,7 +40,7 @@ export default class Checkboxes extends React.Component<Props, State> {
           {options.map((option, i) => {
             const { name, value } = option || {};
             return (
-              <label htmlFor={`paperRadios${i + 1}`} className="paper-radio">
+              <label htmlFor={`paperRadios${i + 1}`} className="paper-radio" key={name}>
                 <input
                   type="radio"
                   name="paperRadios"

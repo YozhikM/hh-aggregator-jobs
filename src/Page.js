@@ -88,7 +88,7 @@ export default class Page extends React.Component<Props, State> {
     const city = page.replace(/-\d/gi, '');
     const currentPage = page.replace(/\d+-/gi, '');
 
-    const url = `https://api.hh.ru/vacancies?text=${query}&area=${city}&per_page=${perPage}&page=${currentPage}`;
+    const url = `https://api.hh.ru/vacancies?text=${query}&area=${city}&per_page=${perPage}&page=${currentPage}&order_by=publication_time`;
     fetch(url)
       .then(res => res.json())
       .then(data => {
@@ -134,7 +134,7 @@ export default class Page extends React.Component<Props, State> {
 
         this.setState({ jobs: copyJobs });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   onChangeCheckbox: () => void;
