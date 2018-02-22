@@ -15,7 +15,6 @@ module.exports = {
     'class-methods-use-this': 0,
     'flowtype-errors/show-errors': 2,
     'flowtype-errors/enforce-min-coverage': [2, 50],
-    'unicorn/catch-error-name': ['error', { name: 'err' }],
     'unicorn/explicit-length-check': 'error',
     'unicorn/filename-case': 0,
     'unicorn/no-abusive-eslint-disable': 'error',
