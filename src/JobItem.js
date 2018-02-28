@@ -6,12 +6,16 @@ import 'papercss/dist/paper.min.css';
 
 const badges = [
   { name: 'react', color: 'success' },
+  { name: 'node', color: 'success' },
   { name: 'javascript', color: 'secondary' },
   { name: 'vue', color: 'secondary' },
   { name: 'angular', color: 'secondary' },
   { name: 'jquery', color: 'warning' },
   { name: 'php', color: 'danger' },
   { name: 'junior', color: 'success' },
+  { name: '.net', color: 'danger' },
+  { name: 'c#', color: 'danger' },
+  { name: 'верстальщик', color: 'danger' },
 ];
 
 type Salary = ?{|
@@ -153,7 +157,7 @@ export default class JobItem extends React.Component<Props, State> {
       <div className="sm-12 md-6 lg-4 col align-top" key={id}>
         <div className="card">
           <div className="card-header">
-            {this.getBadges(name + requirement + (responsibility || ''))}
+            {this.getBadges(name + requirement + (responsibility || '') + fullDescription)}
             <h4 className="card-subtitle" style={{ fontFamily: '"Neucha",sans-serif' }}>
               {name}
             </h4>
