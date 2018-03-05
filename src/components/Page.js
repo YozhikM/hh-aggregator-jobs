@@ -7,7 +7,7 @@ import Select from './Select';
 import JobItem from './JobItem';
 import Checkboxes from './Checkboxes';
 import Pagination from './Pagination';
-import { type Jobs } from './type';
+import { type Jobs } from '../type';
 
 type Props = {|
   history: RouterHistory,
