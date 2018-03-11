@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 const { schemaComposer } = require('graphql-compose');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 
-const JobSchema: Mongoose$Schema<Job> = mongoose.Schema({
+const JobSchema = mongoose.Schema({
   name: String,
   id: String,
   salary: {
@@ -64,7 +64,7 @@ schemaComposer.rootMutation().addFields({
 
 const graphqlSchema = schemaComposer.buildSchema();
 
-async function upsertDesc(job: Job): Promise<string> {
+async function upsertDesc(job) {
   const { id } = job || {};
 
   // const hasDesc = await Job.find({ id, description: { $ne: null } });
@@ -75,17 +75,16 @@ async function upsertDesc(job: Job): Promise<string> {
   return result.description;
 }
 
-async function upsertToDB(job: Job, area: number): Promise<Job> {
+async function upsertToDB(job, area) {
   const { id } = job || {};
 
   const description = await upsertDesc(job);
 
-  const isRepeat: Job = await Job.findOne({ id }).exec();
+  const isRepeat = await Job.findOne({ id }).exec();
 
-  const newJob: Job = new Job({ ...job, area, description });
+  const newJob = new Job({ ...job, area, description });
 
   if (isRepeat && isRepeat.id === id) {
-    console.log(`${isRepeat.id} already has`);
     return null;
   }
   await Job.insertMany(newJob, err => {
@@ -95,11 +94,11 @@ async function upsertToDB(job: Job, area: number): Promise<Job> {
   return job;
 }
 
-async function getFetchData(page: number, area: number): Promise<Object> {
+async function getFetchData(page, area) {
   const response = await fetch(
-    `https://api.hh.ru/vacancies?text=react+OR+frontend&area=${area}&per_page=10&page=${page}&order_by=publication_time`
+    `https://api.hh.ru/vacancies?text=react+OR+frontend+OR+graphql&area=${area}&per_page=10&page=${page}&order_by=publication_time`
   );
-  const result: Object = await response.json();
+  const result = await response.json();
 
   return result;
 }
