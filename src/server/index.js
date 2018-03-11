@@ -15,4 +15,4 @@ const bundler = new ParcelBundler('index.html');
 app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: graphqlSchema }));
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 app.use(bundler.middleware());
-app.listen(3000, () => console.log('Now browse to localhost:3000/graphiql'));
+app.listen(process.env.PORT || 3000, () => console.log('Now browse to localhost:3000/graphiql'));
