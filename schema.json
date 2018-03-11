@@ -427,8 +427,8 @@
               "description": null,
               "args": [],
               "type": {
-                "kind": "OBJECT",
-                "name": "JobArea",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -477,6 +477,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "JobAddress",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -630,41 +642,6 @@
         },
         {
           "kind": "OBJECT",
-          "name": "JobArea",
-          "description": null,
-          "fields": [
-            {
-              "name": "id",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            },
-            {
-              "name": "name",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
           "name": "JobEmployer",
           "description": null,
           "fields": [
@@ -797,6 +774,18 @@
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "possibleTypes": null
@@ -851,8 +840,8 @@
               "name": "area",
               "description": null,
               "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "JobAreaInput",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -893,6 +882,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "JobAddressInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -1056,37 +1055,6 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "JobAreaInput",
-          "description": null,
-          "fields": null,
-          "inputFields": [
-            {
-              "name": "id",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            },
-            {
-              "name": "name",
-              "description": null,
-              "type": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              },
-              "defaultValue": null
-            }
-          ],
-          "interfaces": null,
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "INPUT_OBJECT",
           "name": "JobEmployerInput",
           "description": null,
           "fields": null,
@@ -1185,12 +1153,111 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "published_at",
+              "description": "",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "Published_atOperatorsFilterFindOneJobInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "_id",
               "description": "",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "_idOperatorsFilterFindOneJobInput",
                 "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "Published_atOperatorsFilterFindOneJobInput",
+          "description": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "gt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "gte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "ne",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "in",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "nin",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }
@@ -1307,6 +1374,18 @@
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "possibleTypes": null
@@ -1361,8 +1440,8 @@
               "name": "area",
               "description": null,
               "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "JobAreaInput",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -1403,6 +1482,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "JobAddressInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -1489,12 +1578,111 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "published_at",
+              "description": "",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "Published_atOperatorsFilterFindManyJobInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "_id",
               "description": "",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "_idOperatorsFilterFindManyJobInput",
                 "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "Published_atOperatorsFilterFindManyJobInput",
+          "description": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "gt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "gte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "ne",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "in",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "nin",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }
@@ -1611,6 +1799,18 @@
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "possibleTypes": null
@@ -1665,8 +1865,8 @@
               "name": "area",
               "description": null,
               "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "JobAreaInput",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -1707,6 +1907,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "JobAddressInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -1793,12 +2003,111 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "published_at",
+              "description": "",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "Published_atOperatorsFilterJobInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "_id",
               "description": "",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "_idOperatorsFilterJobInput",
                 "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "Published_atOperatorsFilterJobInput",
+          "description": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "gt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "gte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "ne",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "in",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "nin",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }
@@ -2562,8 +2871,8 @@
               "name": "area",
               "description": null,
               "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "JobAreaInput",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -2604,6 +2913,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "JobAddressInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -2698,8 +3017,8 @@
               "name": "area",
               "description": null,
               "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "JobAreaInput",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -2740,6 +3059,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "JobAddressInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -2838,8 +3167,8 @@
               "name": "area",
               "description": null,
               "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "JobAreaInput",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -2880,6 +3209,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "JobAddressInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -2939,8 +3278,8 @@
               "name": "area",
               "description": null,
               "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "JobAreaInput",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -2981,6 +3320,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "JobAddressInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -3067,12 +3416,111 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "published_at",
+              "description": "",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "Published_atOperatorsFilterUpdateOneJobInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "_id",
               "description": "",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "_idOperatorsFilterUpdateOneJobInput",
                 "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "Published_atOperatorsFilterUpdateOneJobInput",
+          "description": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "gt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "gte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "ne",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "in",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "nin",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }
@@ -3189,6 +3637,18 @@
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "possibleTypes": null
@@ -3268,8 +3728,8 @@
               "name": "area",
               "description": null,
               "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "JobAreaInput",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -3310,6 +3770,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "JobAddressInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -3369,8 +3839,8 @@
               "name": "area",
               "description": null,
               "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "JobAreaInput",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -3411,6 +3881,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "JobAddressInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -3497,12 +3977,111 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "published_at",
+              "description": "",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "Published_atOperatorsFilterUpdateManyJobInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "_id",
               "description": "",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "_idOperatorsFilterUpdateManyJobInput",
                 "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "Published_atOperatorsFilterUpdateManyJobInput",
+          "description": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "gt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "gte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "ne",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "in",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "nin",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }
@@ -3619,6 +4198,18 @@
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "possibleTypes": null
@@ -3731,8 +4322,8 @@
               "name": "area",
               "description": null,
               "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "JobAreaInput",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -3773,6 +4364,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "JobAddressInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -3859,12 +4460,111 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "published_at",
+              "description": "",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "Published_atOperatorsFilterRemoveOneJobInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "_id",
               "description": "",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "_idOperatorsFilterRemoveOneJobInput",
                 "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "Published_atOperatorsFilterRemoveOneJobInput",
+          "description": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "gt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "gte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "ne",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "in",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "nin",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }
@@ -3981,6 +4681,18 @@
               "description": null,
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_ASC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "PUBLISHED_AT_DESC",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "possibleTypes": null
@@ -4070,8 +4782,8 @@
               "name": "area",
               "description": null,
               "type": {
-                "kind": "INPUT_OBJECT",
-                "name": "JobAreaInput",
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -4112,6 +4824,16 @@
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "JobAddressInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "description",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               },
               "defaultValue": null
@@ -4198,12 +4920,111 @@
           "fields": null,
           "inputFields": [
             {
+              "name": "published_at",
+              "description": "",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "Published_atOperatorsFilterRemoveManyJobInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "_id",
               "description": "",
               "type": {
                 "kind": "INPUT_OBJECT",
                 "name": "_idOperatorsFilterRemoveManyJobInput",
                 "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "Published_atOperatorsFilterRemoveManyJobInput",
+          "description": null,
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "gt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "gte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lt",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "lte",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "ne",
+              "description": null,
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "in",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "nin",
+              "description": null,
+              "type": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             }

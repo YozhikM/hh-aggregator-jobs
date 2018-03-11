@@ -7,11 +7,12 @@ export type FilterFindManyJobInput = {|
   id?: ?string,
   salary?: ?JobSalaryInput,
   snippet?: ?JobSnippetInput,
-  area?: ?JobAreaInput,
+  area?: ?string,
   created_at?: ?string,
   published_at?: ?string,
   employer?: ?JobEmployerInput,
   address?: ?JobAddressInput,
+  description?: ?string,
   _id?: ?any,
   _ids?: ?Array< ?any >,
   // List of *indexed* fields that can be filtered via operators.
@@ -32,11 +33,6 @@ export type JobSnippetInput = {|
   responsibility?: ?string,
 |};
 
-export type JobAreaInput = {|
-  id?: ?string,
-  name?: ?string,
-|};
-
 export type JobEmployerInput = {|
   name?: ?string,
   alternate_url?: ?string,
@@ -53,7 +49,18 @@ export type JobAddressMetroInput = {|
 |};
 
 export type OperatorsFilterFindManyJobInput = {|
+  published_at?: ?Published_atOperatorsFilterFindManyJobInput,
   _id?: ?_idOperatorsFilterFindManyJobInput,
+|};
+
+export type Published_atOperatorsFilterFindManyJobInput = {|
+  gt?: ?string,
+  gte?: ?string,
+  lt?: ?string,
+  lte?: ?string,
+  ne?: ?string,
+  in?: ?Array< ?string >,
+  nin?: ?Array< ?string >,
 |};
 
 export type _idOperatorsFilterFindManyJobInput = {|
@@ -66,10 +73,18 @@ export type _idOperatorsFilterFindManyJobInput = {|
   nin?: ?Array< ?any >,
 |};
 
+export type SortFindManyJobInput =
+  "PUBLISHED_AT_ASC" |
+  "PUBLISHED_AT_DESC" |
+  "_ID_ASC" |
+  "_ID_DESC";
+
+
 export type PageQueryQueryVariables = {|
   page?: ?number,
   perPage?: ?number,
   filter?: ?FilterFindManyJobInput,
+  sort?: ?SortFindManyJobInput,
 |};
 
 export type PageQueryQuery = {|
@@ -93,10 +108,12 @@ export type PageQueryQuery = {|
     items: ? Array<? {|
       id: ?string,
       name: ?string,
+      description: ?string,
       salary: ? {|
         from: ?number,
         to: ?number,
         currency: ?string,
+        gross: ?boolean,
       |},
       snippet: ? {|
         responsibility: ?string,
@@ -115,5 +132,33 @@ export type PageQueryQuery = {|
         |},
       |},
     |} >,
+  |},
+|};
+
+export type JobItemFragment = {|
+  id: ?string,
+  name: ?string,
+  description: ?string,
+  salary: ? {|
+    from: ?number,
+    to: ?number,
+    currency: ?string,
+    gross: ?boolean,
+  |},
+  snippet: ? {|
+    responsibility: ?string,
+    requirement: ?string,
+  |},
+  created_at: ?string,
+  published_at: ?string,
+  employer: ? {|
+    name: ?string,
+    alternate_url: ?string,
+  |},
+  address: ? {|
+    city: ?string,
+    metro: ? {|
+      station_name: ?string,
+    |},
   |},
 |};
