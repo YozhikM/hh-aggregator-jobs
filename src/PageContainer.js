@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import 'papercss/dist/paper.min.css';
-import { HashRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Page from './Page';
 
 export default function PageContainer() {

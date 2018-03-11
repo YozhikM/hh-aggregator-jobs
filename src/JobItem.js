@@ -16,6 +16,10 @@ const badges = [
   { name: '.net', color: 'danger' },
   { name: 'c#', color: 'danger' },
   { name: 'верстальщик', color: 'danger' },
+  { name: 'python', color: 'danger' },
+  { name: 'mongo', color: 'success' },
+  { name: 'graphql', color: 'success' },
+  { name: 'objective-с', color: 'danger' },
 ];
 
 type Salary = ?{|
@@ -27,8 +31,6 @@ type Salary = ?{|
 
 type Props = {|
   job: Object,
-  index: number,
-  fetchJob: Function,
 |};
 
 type State = {
@@ -39,7 +41,6 @@ export default class JobItem extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.fetchJob = this.fetchJob.bind(this);
     this.onRespond = this.onRespond.bind(this);
     this.toggleDescription = this.toggleDescription.bind(this);
 
@@ -111,18 +112,10 @@ export default class JobItem extends React.Component<Props, State> {
     );
   }
 
-  fetchJob: () => void;
-
-  fetchJob() {
-    const { fetchJob, job, index } = this.props;
-    const { url } = job || {};
-    if (fetchJob) fetchJob(url, index);
-  }
-
   toggleDescription: () => void;
 
   toggleDescription() {
-    this.setState({ isFullDescription: !this.state.isFullDescription }, () => this.fetchJob());
+    this.setState({ isFullDescription: !this.state.isFullDescription });
   }
 
   onRespond: () => void;
@@ -137,27 +130,19 @@ export default class JobItem extends React.Component<Props, State> {
   render() {
     const { isFullDescription } = this.state;
     const { job } = this.props;
-    const {
-      id,
-      name,
-      salary,
-      snippet,
-      employer,
-      address,
-      published_at,
-      fullDescription,
-      response,
-    } =
+    const { id, name, salary, snippet, employer, address, published_at, description, response } =
       job || {};
     const { city: jobCity, metro } = address || {};
     const { requirement, responsibility } = snippet || {};
     const { alternate_url: companyUrl, name: companyName } = employer || {};
 
+    console.log(description);
+
     return (
       <div className="sm-12 md-6 lg-4 col align-top" key={id}>
         <div className="card">
           <div className="card-header">
-            {this.getBadges(name + requirement + (responsibility || '') + fullDescription)}
+            {this.getBadges(name + requirement + (responsibility || '') + description)}
             <h4 className="card-subtitle" style={{ fontFamily: '"Neucha",sans-serif' }}>
               {name}
             </h4>
@@ -180,7 +165,7 @@ export default class JobItem extends React.Component<Props, State> {
             </a>
 
             <div className="margin">
-              {this.renderDescription(responsibility, requirement, fullDescription)}
+              {this.renderDescription(responsibility, requirement, description)}
             </div>
 
             {published_at && (

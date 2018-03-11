@@ -2,36 +2,30 @@
 
 import * as React from 'react';
 import { type RouterHistory, type Match } from 'react-router-dom';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import 'papercss/dist/paper.min.css';
-import Select from './Select';
 import JobItem from './JobItem';
-import Checkboxes from './Checkboxes';
 import Pagination from './Pagination';
-import { type Jobs } from './type';
+import Select from './Select';
+import type { PageQueryQuery, PageQueryQueryVariables } from './types.flow';
 
 type Props = {|
   history: RouterHistory,
   match: Match,
+  data: ?PageQueryQuery,
 |};
 
 type State = {
   page: string,
   pages?: number,
-  jobs?: Jobs,
   perPage?: number,
   count?: number,
-  query: string,
 };
 
-export default class Page extends React.Component<Props, State> {
+class Page extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-
-    this.fetchJob = this.fetchJob.bind(this);
-    this.onSelect = this.onSelect.bind(this);
-    this.fetchData = this.fetchData.bind(this);
-    this.initializeArray = this.initializeArray.bind(this);
-    this.onChangeCheckbox = this.onChangeCheckbox.bind(this);
 
     const { history, match } = this.props;
     const { params } = match || {};
@@ -40,120 +34,53 @@ export default class Page extends React.Component<Props, State> {
     if (page) {
       this.state = {
         page,
-        query: 'frontend',
       };
     } else {
       history.push('160-1');
       this.state = {
         page: '160-1',
-        query: 'frontend',
       };
     }
-    this.fetchData();
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.match.params !== this.props.match.params) {
-      const { match } = nextProps;
-      const { params } = match || {};
-      const { page } = params || {};
-      if (page) this.setState({ page }, () => this.fetchData());
-    }
+    const { data, match } = nextProps || {};
+    const { jobPagination } = data || {};
+    const { count, pageInfo } = jobPagination || {};
+    const { pageCount } = pageInfo || {};
+    const { params } = match || {};
+    const { page } = params || {};
+
+    if (pageCount && count) this.setState({ pages: pageCount, count, page });
   }
 
-  onSelect: string => void;
-
-  onSelect(city: string) {
-    const { history } = this.props;
-    this.setState({ page: `${city}-1` }, () => {
-      history.replace(`${city}-1`);
-      this.fetchData();
-    });
-  }
-
-  fetchData: Function;
-
-  fetchData() {
-    const { page, query } = this.state;
-
-    let perPage = 0;
-
-    if (document.body) {
-      const cw = document.body.clientWidth;
-      if (cw <= 768) perPage = 6;
-      if (cw >= 769 && cw <= 1199) perPage = 8;
-      if (cw >= 1200) perPage = 9;
-    }
-
-    const city = page.replace(/-\d/gi, '');
-    const currentPage = page.replace(/\d+-/gi, '');
-
-    const url = `https://api.hh.ru/vacancies?text=${query}&area=${city}&per_page=${perPage}&page=${currentPage}&order_by=publication_time`;
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        const { items, pages, found } = data || {};
-        this.setState(
-          {
-            jobs: items,
-            count: found,
-            pages,
-          },
-          () => {
-            if (document.body) document.body.scrollTop = 0;
-          }
-        );
-      })
-      .catch(err => console.log(err));
-  }
-
-  initializeArray: (?number, ?number) => Array<number>;
-
-  initializeArray(start: number = 1, step: number = 1): Array<number> {
+  initializeArray = (start: number = 1, step: number = 1): Array<number> => {
     const { pages = 1 } = this.state;
     return Array.from({ length: Math.ceil((pages - start) / step) }).map(
       (v, i) => i * step + start
     );
-  }
+  };
 
-  fetchJob: (string, number) => void;
+  onSelect = (value: string) => {
+    const { history } = this.props;
 
-  fetchJob(jobUrl: string, index: number) {
-    fetch(jobUrl)
-      .then(res => res.json())
-      .then(data => {
-        const { jobs } = this.state;
-        if (!jobs) return;
-
-        const { description, apply_alternate_url } = data || {};
-        const newJob = jobs[index];
-        newJob.fullDescription = description;
-        newJob.response = apply_alternate_url;
-        const copyJobs = jobs.slice();
-        copyJobs.splice(index, 1, newJob);
-
-        this.setState({ jobs: copyJobs });
-      })
-      .catch(err => console.error(err));
-  }
-
-  onChangeCheckbox: () => void;
-
-  onChangeCheckbox(query: string) {
-    this.setState({ query }, () => this.fetchData());
-  }
+    history.replace(`${value}-1`);
+  };
 
   render() {
-    const { jobs, count, page, query } = this.state;
+    const { data } = this.props;
+    const { jobPagination } = data || {};
+    const { items } = jobPagination || {};
+    const { count, page } = this.state;
     const city = page.replace(/-\d/gi, '');
     const pagesArray = this.initializeArray();
-    if (!jobs) return null;
+    if (!items) return null;
 
     return (
       <div>
-        <Select onSelect={this.onSelect} page={page} />
+        <Select onSelect={this.onSelect} page={city} />
 
-        <Checkboxes onChange={this.onChangeCheckbox} query={query} />
+        {/* <Checkboxes onChange={this.onChangeCheckbox} query={query} /> */}
 
         {count && (
           <div className="row flex-center">
@@ -162,10 +89,11 @@ export default class Page extends React.Component<Props, State> {
         )}
 
         <div className="row">
-          {jobs.map((job, i) => {
-            const { id } = job || {};
-            return <JobItem key={id} job={job} index={i} fetchJob={this.fetchJob} />;
-          })}
+          {items &&
+            items.map(job => {
+              const { id } = job || {};
+              return <JobItem key={id} job={job} />;
+            })}
         </div>
         <div className="row flex-center align-bottom">
           <Pagination pagesArray={pagesArray} city={city} />
@@ -174,3 +102,69 @@ export default class Page extends React.Component<Props, State> {
     );
   }
 }
+
+const PageQuery = gql`
+  query PageQuery(
+    $page: Int
+    $perPage: Int
+    $filter: FilterFindManyJobInput
+    $sort: SortFindManyJobInput
+  ) {
+    jobPagination(page: $page, perPage: $perPage, filter: $filter, sort: $sort) {
+      pageInfo {
+        pageCount
+        hasNextPage
+        currentPage
+        hasPreviousPage
+        perPage
+      }
+      count
+      items {
+        id
+        name
+        description
+        salary {
+          from
+          to
+          currency
+        }
+        snippet {
+          responsibility
+          requirement
+        }
+        created_at
+        published_at
+        employer {
+          name
+          alternate_url
+        }
+        address {
+          city
+          metro {
+            station_name
+          }
+        }
+      }
+    }
+  }
+`;
+
+const options = ({ match }): { variables: PageQueryQueryVariables } => {
+  const { params } = match || {};
+  const { page } = params || {};
+  let area;
+  let pageNumber;
+
+  if (!page) {
+    area = 160;
+    pageNumber = 1;
+  } else {
+    [area = 160, pageNumber = 1] = page.match(/\d+/gi);
+  }
+
+  const filter = { area };
+
+  return { variables: { page: pageNumber, filter, perPage: 9, sort: 'PUBLISHED_AT_DESC' } };
+};
+
+export default graphql(PageQuery, { options })(Page);
