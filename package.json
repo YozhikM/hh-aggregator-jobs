@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Aggregator vacancies",
   "scripts": {
-    "server": "node src/server/index.js",
+    "start": "node src/server/index.js",
     "lint": "./node_modules/.bin/eslint src/"
   },
   "author": "Stanislav Botev",
