@@ -4,8 +4,6 @@
   "description": "Aggregator vacancies",
   "scripts": {
     "server": "node src/server/index.js",
-    "now-build": "node src/server/index.js",
-    "now-start": "serve -s ./dist",
     "lint": "./node_modules/.bin/eslint src/"
   },
   "author": "Stanislav Botev",
@@ -25,7 +23,7 @@
     "mongoose": "^5.0.9",
     "node-fetch": "^2.1.1",
     "papercss": "^1.4.1",
-    "parcel-bundler": "^1.4.1",
+    "parcel-bundler": "1.6.2",
     "react": "^16.2.0",
     "react-apollo": "^2.0.4",
     "react-dom": "^16.2.0",

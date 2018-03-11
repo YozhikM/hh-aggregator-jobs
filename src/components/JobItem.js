@@ -136,8 +136,6 @@ export default class JobItem extends React.Component<Props, State> {
     const { requirement, responsibility } = snippet || {};
     const { alternate_url: companyUrl, name: companyName } = employer || {};
 
-    console.log(description);
-
     return (
       <div className="sm-12 md-6 lg-4 col align-top" key={id}>
         <div className="card">
