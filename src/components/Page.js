@@ -43,6 +43,38 @@ class Page extends React.Component<Props, State> {
     }
   }
 
+  static fragments = {
+    job: gql`
+      fragment JobItem on Job {
+        id
+        name
+        description
+        salary {
+          from
+          to
+          currency
+          gross
+        }
+        snippet {
+          responsibility
+          requirement
+        }
+        created_at
+        published_at
+        employer {
+          name
+          alternate_url
+        }
+        address {
+          city
+          metro {
+            station_name
+          }
+        }
+      }
+    `,
+  };
+
   componentWillReceiveProps(nextProps: Props) {
     const { data, match } = nextProps || {};
     const { jobPagination } = data || {};
@@ -51,7 +83,8 @@ class Page extends React.Component<Props, State> {
     const { params } = match || {};
     const { page } = params || {};
 
-    if (pageCount && count) this.setState({ pages: pageCount, count, page });
+    if (pageCount && count && page) this.setState({ pages: pageCount, count, page });
+    if (document.body) document.body.scrollTop = 0;
   }
 
   initializeArray = (start: number = 1, step: number = 1): Array<number> => {
@@ -65,6 +98,7 @@ class Page extends React.Component<Props, State> {
     const { history } = this.props;
 
     history.replace(`${value}-1`);
+    if (document.body) document.body.scrollTop = 0;
   };
 
   render() {
@@ -91,6 +125,7 @@ class Page extends React.Component<Props, State> {
         <div className="row">
           {items &&
             items.map(job => {
+              if (!job) return null;
               const { id } = job || {};
               return <JobItem key={id} job={job} />;
             })}
@@ -120,51 +155,29 @@ const PageQuery = gql`
       }
       count
       items {
-        id
-        name
-        description
-        salary {
-          from
-          to
-          currency
-        }
-        snippet {
-          responsibility
-          requirement
-        }
-        created_at
-        published_at
-        employer {
-          name
-          alternate_url
-        }
-        address {
-          city
-          metro {
-            station_name
-          }
-        }
+        ...JobItem
       }
     }
   }
+  ${Page.fragments.job}
 `;
 
-const options = ({ match }): { variables: PageQueryQueryVariables } => {
+const options = ({ match }: { match: Match }): { variables: PageQueryQueryVariables } => {
   const { params } = match || {};
   const { page } = params || {};
   let area;
   let pageNumber;
 
   if (!page) {
-    area = 160;
+    area = '160';
     pageNumber = 1;
   } else {
-    [area = 160, pageNumber = 1] = page.match(/\d+/gi);
+    [area = '160', pageNumber = 1] = page.match(/\d+/gi);
   }
 
   const filter = { area };
 
-  return { variables: { page: pageNumber, filter, perPage: 9, sort: 'PUBLISHED_AT_DESC' } };
+  return { variables: { page: Number(pageNumber), filter, perPage: 9, sort: 'PUBLISHED_AT_DESC' } };
 };
 
 export default graphql(PageQuery, { options })(Page);

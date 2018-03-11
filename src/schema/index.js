@@ -5,7 +5,7 @@ const fetch = require('node-fetch');
 const { schemaComposer } = require('graphql-compose');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
 
-const JobSchema = mongoose.Schema({
+const JobSchema: Mongoose$Schema<Job> = mongoose.Schema({
   name: String,
   id: String,
   salary: {
@@ -64,8 +64,8 @@ schemaComposer.rootMutation().addFields({
 
 const graphqlSchema = schemaComposer.buildSchema();
 
-async function upsertDesc(job) {
-  const { description, id } = job || {};
+async function upsertDesc(job: Job): Promise<string> {
+  const { id } = job || {};
 
   // const hasDesc = await Job.find({ id, description: { $ne: null } });
 
@@ -75,37 +75,36 @@ async function upsertDesc(job) {
   return result.description;
 }
 
-async function upsertToDB(job) {
-  const { id, area } = job || {};
-  const { id: areaId } = area || {};
+async function upsertToDB(job: Job, area: number): Promise<Job> {
+  const { id } = job || {};
 
   const description = await upsertDesc(job);
 
-  const isRepeat = await Job.findOne({ id }).exec();
+  const isRepeat: Job = await Job.findOne({ id }).exec();
 
-  const newJob = new Job({ ...job, area: areaId, description });
+  const newJob: Job = new Job({ ...job, area, description });
 
   if (isRepeat && isRepeat.id === id) {
     console.log(`${isRepeat.id} already has`);
     return null;
   }
-  await Job.insertMany(newJob, (err, doc) => {
+  await Job.insertMany(newJob, err => {
     if (err) console.error(err);
   });
 
   return job;
 }
 
-async function getFetchData(page, area) {
+async function getFetchData(page: number, area: number): Promise<Object> {
   const response = await fetch(
     `https://api.hh.ru/vacancies?text=react+OR+frontend&area=${area}&per_page=10&page=${page}&order_by=publication_time`
   );
-  const result = await response.json();
+  const result: Object = await response.json();
 
   return result;
 }
 
-const areas = [160, 3, 4, 88, 66, 76];
+const areas = [160, 3, 4, 88, 66, 76, 1255, 1438, 1586, 2114, 2019];
 
 async function connectToDB() {
   areas.forEach(async area => {
@@ -117,6 +116,7 @@ async function connectToDB() {
 
     if (fetchData.pages >= page) {
       for (let i = 0; i <= fetchData.pages + 1; i++) {
+        // eslint-disable-next-line no-await-in-loop
         const data = await getFetchData(page, area);
         result.push(...data.items);
         page += 1;
@@ -125,7 +125,7 @@ async function connectToDB() {
 
     if (!result) return;
     result.forEach(async job => {
-      await upsertToDB(job);
+      await upsertToDB(job, area);
     });
   });
 }

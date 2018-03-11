@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { format } from 'date-fns';
 import 'papercss/dist/paper.min.css';
+import { type JobItemFragment, type JobSalaryInput } from './types.flow';
 
 const badges = [
   { name: 'react', color: 'success' },
@@ -22,15 +23,8 @@ const badges = [
   { name: 'objective-с', color: 'danger' },
 ];
 
-type Salary = ?{|
-  +to: ?number,
-  +gross: boolean,
-  +from: ?number,
-  +currency: string,
-|};
-
 type Props = {|
-  job: Object,
+  job: JobItemFragment,
 |};
 
 type State = {
@@ -38,30 +32,20 @@ type State = {
 };
 
 export default class JobItem extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
+  state = {
+    isFullDescription: false,
+  };
 
-    this.onRespond = this.onRespond.bind(this);
-    this.toggleDescription = this.toggleDescription.bind(this);
-
-    this.state = {
-      isFullDescription: false,
-    };
-  }
-  getSalary: Salary => string;
-
-  getSalary(salary: Salary): string {
+  getSalary = (salary: ?JobSalaryInput): string => {
     const { from, to, currency } = salary || {};
 
     if (from && to && currency) return `от ${from} до ${to} ${currency}`;
     if (from && !to && currency) return `от ${from} ${currency}`;
     if (!from && to && currency) return `до ${to} ${currency}`;
     return `не указана`;
-  }
+  };
 
-  getBadges: string => React.Node;
-
-  getBadges(string: string): ?React.Node {
+  getBadges = (string: string): ?React.Node => {
     const arr = badges
       .map(badge => {
         const reg = new RegExp(badge.name, 'gi');
@@ -73,7 +57,11 @@ export default class JobItem extends React.Component<Props, State> {
       return (
         <div>
           {arr.map(a => (
-            <span key={a.name} style={{ marginRight: '10px' }} className={`badge ${a.color}`}>
+            <span
+              key={a.name}
+              style={{ marginRight: '10px', marginTop: '10px' }}
+              className={`badge ${a.color}`}
+            >
               {a.name}
             </span>
           ))}
@@ -81,9 +69,13 @@ export default class JobItem extends React.Component<Props, State> {
       );
     }
     return null;
-  }
+  };
 
-  renderDescription(responsibility: ?string, requirement: ?string, fullDescription?: React.Node) {
+  renderDescription = (
+    responsibility: ?string,
+    requirement: ?string,
+    fullDescription?: React.Node
+  ) => {
     const { isFullDescription } = this.state;
 
     if (!isFullDescription) {
@@ -110,28 +102,16 @@ export default class JobItem extends React.Component<Props, State> {
         <div dangerouslySetInnerHTML={{ __html: fullDescription }} />
       </div>
     );
-  }
+  };
 
-  toggleDescription: () => void;
-
-  toggleDescription() {
+  toggleDescription = () => {
     this.setState({ isFullDescription: !this.state.isFullDescription });
-  }
-
-  onRespond: () => void;
-
-  onRespond() {
-    const { job } = this.props;
-    const { response } = job || {};
-
-    window.open(response);
-  }
+  };
 
   render() {
     const { isFullDescription } = this.state;
     const { job } = this.props;
-    const { id, name, salary, snippet, employer, address, published_at, description, response } =
-      job || {};
+    const { id, name, salary, snippet, employer, address, published_at, description } = job || {};
     const { city: jobCity, metro } = address || {};
     const { requirement, responsibility } = snippet || {};
     const { alternate_url: companyUrl, name: companyName } = employer || {};
@@ -140,7 +120,9 @@ export default class JobItem extends React.Component<Props, State> {
       <div className="sm-12 md-6 lg-4 col align-top" key={id}>
         <div className="card">
           <div className="card-header">
-            {this.getBadges(name + requirement + (responsibility || '') + description)}
+            {this.getBadges(
+              (name || '') + (requirement || '') + (responsibility || '') + (description || '')
+            )}
             <h4 className="card-subtitle" style={{ fontFamily: '"Neucha",sans-serif' }}>
               {name}
             </h4>
@@ -174,11 +156,6 @@ export default class JobItem extends React.Component<Props, State> {
               <button className="paper-btn btn-small" onClick={this.toggleDescription}>
                 {isFullDescription ? 'Свернуть' : 'Показать полное описание'}
               </button>
-              {response && (
-                <button className="paper-btn btn-small" onClick={this.onRespond}>
-                  Откликнуться
-                </button>
-              )}
             </div>
           </div>
         </div>
