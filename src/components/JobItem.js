@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { format } from 'date-fns';
 import 'papercss/dist/paper.min.css';
-import { type JobItemFragment, type JobSalaryInput } from './types.flow';
 
 const badges = [
   { name: 'react', color: 'success' },
@@ -24,7 +23,7 @@ const badges = [
 ];
 
 type Props = {|
-  job: JobItemFragment,
+  job: Object,
 |};
 
 type State = {
@@ -38,7 +37,7 @@ export default class JobItem extends React.Component<Props, State> {
     isRemoved: false,
   };
 
-  getSalary = (salary: ?JobSalaryInput): string => {
+  getSalary = (salary: ?Object): string => {
     const { from, to, currency } = salary || {};
 
     if (from && to && currency) return `от ${from} до ${to} ${currency}`;

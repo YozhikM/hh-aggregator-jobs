@@ -10,13 +10,12 @@ import JobItem from './JobItem';
 import Pagination from './Pagination';
 import Select from './Select';
 import SearchForm from './SearchForm';
-import type { PageQueryQuery, PageQueryQueryVariables } from './types.flow';
 
 type Props = {|
   history: RouterHistory,
   match: Match,
   location: Location,
-  data: ?PageQueryQuery,
+  data: ?Object,
 |};
 
 type State = {
@@ -177,7 +176,7 @@ const PageQuery = gql`
   ${Page.fragments.job}
 `;
 
-const options = ({ match, location }: Props): { variables: PageQueryQueryVariables } => {
+const options = ({ match, location }: Props): { variables: Object } => {
   const { params } = match || {};
   const { page } = params || {};
   let area;
