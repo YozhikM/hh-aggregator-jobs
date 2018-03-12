@@ -29,11 +29,13 @@ type Props = {|
 
 type State = {
   isFullDescription: boolean,
+  isRemoved: boolean,
 };
 
 export default class JobItem extends React.Component<Props, State> {
   state = {
     isFullDescription: false,
+    isRemoved: false,
   };
 
   getSalary = (salary: ?JobSalaryInput): string => {
@@ -55,7 +57,7 @@ export default class JobItem extends React.Component<Props, State> {
       .filter(Boolean);
     if (arr.length > 0) {
       return (
-        <div>
+        <div style={{ width: '66%' }}>
           {arr.map(a => (
             <span
               key={a.name}
@@ -109,20 +111,20 @@ export default class JobItem extends React.Component<Props, State> {
   };
 
   render() {
-    const { isFullDescription } = this.state;
+    const { isFullDescription, isRemoved } = this.state;
     const { job } = this.props;
     const { id, name, salary, snippet, employer, address, published_at, description } = job || {};
     const { city: jobCity, metro } = address || {};
     const { requirement, responsibility } = snippet || {};
     const { alternate_url: companyUrl, name: companyName } = employer || {};
 
+    if (isRemoved) return null;
+
     return (
       <div className="sm-12 md-6 lg-4 col align-top" key={id}>
         <div className="card">
           <div className="card-header">
-            {this.getBadges(
-              (name || '') + (requirement || '') + (responsibility || '') + (description || '')
-            )}
+            <div className="row flex-edges">{this.getBadges(description || '')}</div>
             <h4 className="card-subtitle" style={{ fontFamily: '"Neucha",sans-serif' }}>
               {name}
             </h4>

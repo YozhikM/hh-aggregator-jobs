@@ -1,18 +1,21 @@
 /* @flow */
 
 import * as React from 'react';
-import { type RouterHistory, type Match } from 'react-router-dom';
+import { type RouterHistory, type Match, type Location } from 'react-router-dom';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import debounce from 'lodash.debounce';
 import 'papercss/dist/paper.min.css';
 import JobItem from './JobItem';
 import Pagination from './Pagination';
 import Select from './Select';
+import SearchForm from './SearchForm';
 import type { PageQueryQuery, PageQueryQueryVariables } from './types.flow';
 
 type Props = {|
   history: RouterHistory,
   match: Match,
+  location: Location,
   data: ?PageQueryQuery,
 |};
 
@@ -31,6 +34,8 @@ class Page extends React.Component<Props, State> {
     const { params } = match || {};
     const { page } = params || {};
 
+    this.onChange = debounce(this.onChange, 300);
+
     if (page) {
       this.state = {
         page,
@@ -46,6 +51,7 @@ class Page extends React.Component<Props, State> {
   static fragments = {
     job: gql`
       fragment JobItem on Job {
+        _id
         id
         name
         description
@@ -83,13 +89,17 @@ class Page extends React.Component<Props, State> {
     const { params } = match || {};
     const { page } = params || {};
 
-    if (pageCount && count && page) this.setState({ pages: pageCount, count, page });
+    if (pageCount && count && page) {
+      this.setState({ pages: pageCount, count, page });
+    } else if (!pageCount && !count) {
+      this.setState({ pages: 0, count: 0 });
+    }
     if (document.body) document.body.scrollTop = 0;
   }
 
   initializeArray = (start: number = 1, step: number = 1): Array<number> => {
     const { pages = 1 } = this.state;
-    return Array.from({ length: Math.ceil((pages - start) / step) }).map(
+    return Array.from({ length: Math.ceil((pages - start) / step + 1) }).map(
       (v, i) => i * step + start
     );
   };
@@ -101,12 +111,17 @@ class Page extends React.Component<Props, State> {
     if (document.body) document.body.scrollTop = 0;
   };
 
+  onChange = (value: string) => {
+    const { location, history } = this.props;
+    history.push({ pathname: location.pathname, search: `q=${value}` });
+  };
+
   render() {
     const { data } = this.props;
     const { jobPagination } = data || {};
     const { items } = jobPagination || {};
     const { count, page } = this.state;
-    const city = page.replace(/-\d/gi, '');
+    const city = page.replace(/-\d+/gi, '');
     const pagesArray = this.initializeArray();
     if (!items) return null;
 
@@ -114,7 +129,7 @@ class Page extends React.Component<Props, State> {
       <div>
         <Select onSelect={this.onSelect} page={city} />
 
-        {/* <Checkboxes onChange={this.onChangeCheckbox} query={query} /> */}
+        <SearchForm onChange={this.onChange} />
 
         {count && (
           <div className="row flex-center">
@@ -162,11 +177,12 @@ const PageQuery = gql`
   ${Page.fragments.job}
 `;
 
-const options = ({ match }: { match: Match }): { variables: PageQueryQueryVariables } => {
+const options = ({ match, location }: Props): { variables: PageQueryQueryVariables } => {
   const { params } = match || {};
   const { page } = params || {};
   let area;
   let pageNumber;
+  const query = location.search.replace(/\?q=/gi, '');
 
   if (!page) {
     area = '160';
@@ -175,7 +191,12 @@ const options = ({ match }: { match: Match }): { variables: PageQueryQueryVariab
     [area = '160', pageNumber = 1] = page.match(/\d+/gi);
   }
 
-  const filter = { area };
+  let filter;
+  if (query) {
+    filter = { q: query, area };
+  } else {
+    filter = { area };
+  }
 
   return { variables: { page: Number(pageNumber), filter, perPage: 9, sort: 'PUBLISHED_AT_DESC' } };
 };

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const fetch = require('node-fetch');
 const { schemaComposer } = require('graphql-compose');
 const { composeWithMongoose } = require('graphql-compose-mongoose');
+const chalk = require('chalk');
 
 const JobSchema = mongoose.Schema({
   name: String,
@@ -36,11 +37,26 @@ const JobSchema = mongoose.Schema({
 });
 
 JobSchema.index({ published_at: 1 });
+JobSchema.index({ created_at: 1 });
 
 const Job = mongoose.model('Job', JobSchema);
 
 const customizationOptions = {};
 const JobTC = composeWithMongoose(Job, customizationOptions);
+
+JobTC.wrapResolver('pagination', resolver =>
+  resolver.addFilterArg({
+    name: 'q',
+    type: 'String',
+    description: 'Search by query',
+    query: (rawQuery, value) => {
+      rawQuery.$or = [
+        { description: { $regex: new RegExp(value, 'ig') } },
+        { name: { $regex: new RegExp(value, 'ig') } },
+      ];
+    },
+  })
+);
 
 schemaComposer.rootQuery().addFields({
   jobById: JobTC.getResolver('findById'),
@@ -76,17 +92,10 @@ async function upsertDesc(job) {
 }
 
 async function upsertToDB(job, area) {
-  const { id } = job || {};
-
   const description = await upsertDesc(job);
-
-  const isRepeat = await Job.findOne({ id }).exec();
 
   const newJob = new Job({ ...job, area, description });
 
-  if (isRepeat && isRepeat.id === id) {
-    return null;
-  }
   await Job.insertMany(newJob, err => {
     if (err) console.error(err);
   });
@@ -96,37 +105,61 @@ async function upsertToDB(job, area) {
 
 async function getFetchData(page, area) {
   const response = await fetch(
-    `https://api.hh.ru/vacancies?text=react+OR+frontend+OR+graphql&area=${area}&per_page=10&page=${page}&order_by=publication_time`
+    `https://api.hh.ru/vacancies?text=frontend+OR+node+OR+javascript&area=${area}&per_page=10&page=${page}&order_by=publication_time`
   );
   const result = await response.json();
 
   return result;
 }
 
-const areas = [160, 3, 4, 88, 66, 76, 1255, 1438, 1586, 2114, 2019];
+const areas = [
+  { id: 160, value: 'Almaty' },
+  { id: 3, value: 'Yekaterinburg' },
+  { id: 4, value: 'Novosibirsk' },
+  { id: 88, value: 'Kazan' },
+  { id: 66, value: 'Nizhny Novgorod' },
+  { id: 76, value: 'Rostov-on-Don' },
+  { id: 1255, value: 'Tomsk' },
+  { id: 1438, value: 'Krasnodar' },
+  { id: 1586, value: 'Samara' },
+  { id: 2114, value: 'Crimea' },
+  { id: 2019, value: 'for the Moscow Ring Road' },
+];
 
-async function connectToDB() {
+async function parseToDB() {
   areas.forEach(async area => {
+    const { id, value } = area || {};
+    const logs = [];
+
     let page = 1;
     const result = [];
-    const fetchData = await getFetchData(page, area);
+    const fetchData = await getFetchData(page, id);
     page += 1;
     result.push(...fetchData.items);
 
     if (fetchData.pages >= page) {
-      for (let i = 0; i <= fetchData.pages + 1; i++) {
+      for (let i = 0; i < fetchData.pages; i++) {
         // eslint-disable-next-line no-await-in-loop
-        const data = await getFetchData(page, area);
+        const data = await getFetchData(page, id);
         result.push(...data.items);
         page += 1;
       }
     }
 
     if (!result) return;
-    result.forEach(async job => {
-      await upsertToDB(job, area);
-    });
+
+    for (let i = 0; i < result.length; i++) {
+      // eslint-disable-next-line no-await-in-loop
+      const isRepeat = await Job.findOne({ id: result[i].id }).exec();
+      if (!isRepeat) {
+        // eslint-disable-next-line no-await-in-loop
+        const upsertedJob = await upsertToDB(result[i], id);
+        logs.push(upsertedJob);
+      }
+    }
+
+    console.log(chalk.blue(`Recorded ${logs.length} for ${value}`));
   });
 }
 
-module.exports = { connectToDB, graphqlSchema };
+module.exports = { parseToDB, graphqlSchema };

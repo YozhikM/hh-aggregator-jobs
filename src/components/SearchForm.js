@@ -28,7 +28,7 @@ export default class SearchForm extends React.Component<Props, void> {
           <label htmlFor="query">Поиск</label>
           <input
             type="text"
-            placeholder="Слова разделяются пробелами"
+            placeholder="Поиск по ключевому слову"
             id="query"
             onChange={this.onChange}
           />
