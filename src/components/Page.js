@@ -186,8 +186,8 @@ const options = ({ match, location }: Props): { variables: Object } => {
   if (!page) {
     area = '160';
     pageNumber = 1;
-  } else {
-    [area = '160', pageNumber = 1] = page.match(/\d+/gi);
+  } else if (page) {
+    [area, pageNumber] = page.match(/\d+/gi);
   }
 
   let filter;

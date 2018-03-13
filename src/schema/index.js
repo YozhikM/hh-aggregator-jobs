@@ -50,6 +50,7 @@ JobTC.wrapResolver('pagination', resolver =>
     type: 'String',
     description: 'Search by query',
     query: (rawQuery, value) => {
+      // eslint-disable-next-line no-param-reassign
       rawQuery.$or = [
         { description: { $regex: new RegExp(value, 'ig') } },
         { name: { $regex: new RegExp(value, 'ig') } },

@@ -1,5 +1,5 @@
 [ignore]
-node_modules/react-apollo/*
+.*/node_modules/react-apollo/.*
 [include]
 
 [libs]
