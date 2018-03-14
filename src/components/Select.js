@@ -13,17 +13,18 @@ type State = {
 };
 
 const options = [
-  { id: 160, value: 'Almaty' },
   { id: 3, value: 'Yekaterinburg' },
   { id: 4, value: 'Novosibirsk' },
-  { id: 88, value: 'Kazan' },
   { id: 66, value: 'Nizhny Novgorod' },
+  { id: 88, value: 'Kazan' },
   { id: 76, value: 'Rostov-on-Don' },
+  { id: 159, value: 'Astana' },
+  { id: 160, value: 'Almaty' },
   { id: 1255, value: 'Tomsk' },
   { id: 1438, value: 'Krasnodar' },
   { id: 1586, value: 'Samara' },
-  { id: 2114, value: 'Crimea' },
   { id: 2019, value: 'for the Moscow Ring Road' },
+  { id: 2114, value: 'Crimea' },
 ];
 
 export default class Select extends React.Component<Props, State> {
