@@ -116,19 +116,20 @@ class Page extends React.Component<Props, State> {
   };
 
   render() {
-    const { data } = this.props;
+    const { data, location } = this.props;
     const { jobPagination } = data || {};
     const { items } = jobPagination || {};
     const { count, page } = this.state;
     const city = page.replace(/-\d+/gi, '');
     const pagesArray = this.initializeArray();
+    const query = location.search;
     if (!items) return null;
 
     return (
       <div>
         <Select onSelect={this.onSelect} page={city} />
 
-        <SearchForm onChange={this.onChange} />
+        <SearchForm onChange={this.onChange} value={query.replace(/\?q=/gi, '')} />
 
         {count && (
           <div className="row flex-center">
@@ -145,7 +146,7 @@ class Page extends React.Component<Props, State> {
             })}
         </div>
         <div className="row flex-center align-bottom">
-          <Pagination pagesArray={pagesArray} city={city} />
+          <Pagination pagesArray={pagesArray} city={city} query={query} />
         </div>
       </div>
     );

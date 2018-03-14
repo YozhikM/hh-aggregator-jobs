@@ -6,13 +6,14 @@ import LinkButton from './LinkButton';
 type Props = {|
   pagesArray: Array<number>,
   city: number | string,
+  query: string,
 |};
 
 type State = {};
 
 export default class Pagination extends React.Component<Props, State> {
   render() {
-    const { pagesArray, city } = this.props;
-    return pagesArray.map(page => <LinkButton data={{ city, page }} key={page} />);
+    const { pagesArray, city, query } = this.props;
+    return pagesArray.map(page => <LinkButton data={{ city, page, query }} key={page} />);
   }
 }

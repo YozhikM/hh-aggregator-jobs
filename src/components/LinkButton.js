@@ -7,15 +7,16 @@ type Props = {|
   data: {|
     city: number | string,
     page: number,
+    query: string,
   |},
 |};
 
 export default function LinkButton(props: Props) {
   const { data } = props;
-  const { city, page } = data || {};
+  const { city, page, query } = data || {};
 
   return (
-    <Link to={`/${city}-${page}`} key={`${city}${page}`}>
+    <Link to={`/${city}-${page}${query}`} key={`${city}${page}`}>
       <button className="btn-small">{page}</button>
     </Link>
   );
