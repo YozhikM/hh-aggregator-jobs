@@ -80,19 +80,28 @@ export default class JobItem extends React.Component<Props, State> {
     const { isFullDescription } = this.state;
 
     if (!isFullDescription) {
-      if (requirement) {
+      if (requirement && responsibility) {
         return (
           <div>
             <strong>Требования: </strong>
             <p className="card-text">{requirement.replace(/<[^>]+>/g, '')}</p>
+
+            <strong>Обязанности: </strong>
+            <p className="card-text">{responsibility.replace(/<[^>]+>/g, '')}</p>
           </div>
         );
-      }
-      if (responsibility) {
+      } else if (!requirement && responsibility) {
         return (
           <div>
             <strong>Обязанности: </strong>
             <p className="card-text">{responsibility.replace(/<[^>]+>/g, '')}</p>
+          </div>
+        );
+      } else if (requirement && !responsibility) {
+        return (
+          <div>
+            <strong>Требования: </strong>
+            <p className="card-text">{requirement.replace(/<[^>]+>/g, '')}</p>
           </div>
         );
       }
