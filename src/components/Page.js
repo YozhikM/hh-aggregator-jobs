@@ -33,7 +33,7 @@ class Page extends React.Component<Props, State> {
     const { params } = match || {};
     const { page } = params || {};
 
-    this.onChange = debounce(this.onChange, 300);
+    this.onChange = debounce(this.onChange, 600);
 
     if (page) {
       this.state = {
