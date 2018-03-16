@@ -8,6 +8,6 @@ The app was written in order to make it as easy as possible to view the current 
 
 ## How to see it
 
-Go to https://pacific-lake-78664.herokuapp.com/
+Go to https://himself-hh.herokuapp.com/
 
 ![HH Aggregator](https://i.imgur.com/qbCBIvA.png)
