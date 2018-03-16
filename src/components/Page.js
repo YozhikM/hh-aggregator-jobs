@@ -104,9 +104,10 @@ class Page extends React.Component<Props, State> {
   };
 
   onSelect = (value: string) => {
-    const { history } = this.props;
+    const { history, location } = this.props;
+    const query = location.search;
 
-    history.replace(`${value}-1`);
+    history.replace(`${value}-1${query}`);
     if (document.body) document.body.scrollTop = 0;
   };
 
