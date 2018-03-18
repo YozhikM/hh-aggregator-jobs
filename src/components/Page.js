@@ -11,12 +11,17 @@ import Pagination from './Pagination';
 import Select from './Select';
 import SearchForm from './SearchForm';
 import { citiesOptions, sortOptions } from './options';
+import {
+  type PageQueryQueryVariables,
+  type SortFindManyJobInput,
+  type PageQueryQuery,
+} from './type';
 
 type Props = {|
   history: RouterHistory,
   match: Match,
   location: Location,
-  data: ?Object,
+  data: PageQueryQuery,
 |};
 
 type State = {
@@ -209,7 +214,7 @@ const PageQuery = gql`
   ${Page.fragments.job}
 `;
 
-const options = ({ match, location }: Props): { variables: Object } => {
+const options = ({ match, location }: Props): { variables: PageQueryQueryVariables } => {
   const { params } = match || {};
   const { page } = params || {};
   let area;
@@ -219,7 +224,10 @@ const options = ({ match, location }: Props): { variables: Object } => {
     area = '160';
     pageNumber = 1;
   } else if (page) {
-    [area, pageNumber] = page.match(/\d+/gi);
+    const matchParts = page.match(/\d+/gi);
+    if (matchParts) {
+      [area, pageNumber] = matchParts;
+    }
   }
 
   let filter;
@@ -229,9 +237,9 @@ const options = ({ match, location }: Props): { variables: Object } => {
     filter = { area };
   }
 
-  let sort;
+  let sort: SortFindManyJobInput;
   if (query.has('sort')) {
-    sort = query.get('sort');
+    sort = (query.get('sort'): any);
   } else {
     sort = 'PUBLISHED_AT_DESC';
   }
