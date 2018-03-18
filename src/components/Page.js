@@ -10,6 +10,7 @@ import JobItem from './JobItem';
 import Pagination from './Pagination';
 import Select from './Select';
 import SearchForm from './SearchForm';
+import { citiesOptions, sortOptions } from './options';
 
 type Props = {|
   history: RouterHistory,
@@ -113,7 +114,24 @@ class Page extends React.Component<Props, State> {
 
   onChange = (value: string) => {
     const { location, history } = this.props;
-    history.push({ pathname: location.pathname, search: `q=${value}` });
+    const query = new URLSearchParams(location.search);
+    if (!query.has('q')) {
+      query.append('q', value);
+    } else {
+      query.set('q', value);
+    }
+    history.push({ pathname: location.pathname, search: query.toString() });
+  };
+
+  onChangeSort = (value: string) => {
+    const { location, history } = this.props;
+    const query = new URLSearchParams(location.search);
+    if (!query.has('sort')) {
+      query.append('sort', value);
+    } else {
+      query.set('sort', value);
+    }
+    history.push({ pathname: location.pathname, search: query.toString() });
   };
 
   render() {
@@ -123,14 +141,27 @@ class Page extends React.Component<Props, State> {
     const { count, page } = this.state;
     const city = page.replace(/-\d+/gi, '');
     const pagesArray = this.initializeArray();
-    const query = location.search;
+    const query = new URLSearchParams(location.search);
     if (!items) return null;
 
     return (
       <div>
-        <Select onSelect={this.onSelect} page={city} />
+        <div className="row">
+          <Select
+            name="Cities"
+            value={city.replace(/-\d/gi, '')}
+            options={citiesOptions}
+            onSelect={this.onSelect}
+          />
+          <Select
+            name="Sorting"
+            value={query.get('sort')}
+            options={sortOptions}
+            onSelect={this.onChangeSort}
+          />
+        </div>
 
-        <SearchForm onChange={this.onChange} value={query.replace(/\?q=/gi, '')} />
+        <SearchForm onChange={this.onChange} value={query.get('q')} />
 
         {count && (
           <div className="row flex-center">
@@ -183,8 +214,7 @@ const options = ({ match, location }: Props): { variables: Object } => {
   const { page } = params || {};
   let area;
   let pageNumber;
-  const query = location.search.replace(/\?q=/gi, '');
-
+  const query = new URLSearchParams(location.search);
   if (!page) {
     area = '160';
     pageNumber = 1;
@@ -193,13 +223,20 @@ const options = ({ match, location }: Props): { variables: Object } => {
   }
 
   let filter;
-  if (query) {
-    filter = { q: query, area };
+  if (query.has('q')) {
+    filter = { q: query.get('q'), area };
   } else {
     filter = { area };
   }
 
-  return { variables: { page: Number(pageNumber), filter, perPage: 9, sort: 'PUBLISHED_AT_DESC' } };
+  let sort;
+  if (query.has('sort')) {
+    sort = query.get('sort');
+  } else {
+    sort = 'PUBLISHED_AT_DESC';
+  }
+
+  return { variables: { page: Number(pageNumber), filter, perPage: 9, sort } };
 };
 
 export default graphql(PageQuery, { options })(Page);

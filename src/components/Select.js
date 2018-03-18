@@ -3,8 +3,12 @@
 import * as React from 'react';
 import 'papercss/dist/paper.min.css';
 
+type OptionT = { name: string | number, value: string };
+
 type Props = {
-  page: string,
+  value?: string,
+  name: string,
+  options: OptionT[],
   onSelect: Function,
 };
 
@@ -12,43 +16,21 @@ type State = {
   activeOption: string,
 };
 
-const options = [
-  { id: 3, value: 'Yekaterinburg' },
-  { id: 4, value: 'Novosibirsk' },
-  { id: 66, value: 'Nizhny Novgorod' },
-  { id: 88, value: 'Kazan' },
-  { id: 76, value: 'Rostov-on-Don' },
-  { id: 159, value: 'Astana' },
-  { id: 160, value: 'Almaty' },
-  { id: 1255, value: 'Tomsk' },
-  { id: 1438, value: 'Krasnodar' },
-  { id: 1586, value: 'Samara' },
-  { id: 2019, value: 'for the Moscow Ring Road' },
-  { id: 2114, value: 'Crimea' },
-];
-
 export default class Select extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.getPage = this.getPage.bind(this);
     this.onSelect = this.onSelect.bind(this);
 
     this.state = {
-      activeOption: this.getPage(props.page) || props.page[0],
+      activeOption: props.value || String(props.options[0].name),
     };
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.page !== this.props.page) {
-      this.setState({ activeOption: this.getPage(nextProps.page) });
+    if (nextProps.value !== this.props.value) {
+      this.setState({ activeOption: nextProps.value });
     }
-  }
-
-  getPage: string => string;
-
-  getPage(page: string) {
-    return page.replace(/-\d/gi, '');
   }
 
   onSelect: Function;
@@ -61,14 +43,15 @@ export default class Select extends React.Component<Props, State> {
   $select: ?HTMLSelectElement;
 
   render() {
+    const { options, name } = this.props;
     const { activeOption } = this.state;
 
     return (
       <div className="row flex-center">
         <div className="form-group margin">
-          <label htmlFor="city">Cities</label>
+          <label htmlFor="select">{name}</label>
           <select
-            id="city"
+            id="select"
             ref={select => {
               this.$select = select;
             }}
@@ -76,9 +59,9 @@ export default class Select extends React.Component<Props, State> {
             onChange={this.onSelect}
           >
             {options.map(option => {
-              const { id, value } = option || {};
+              const { name: optionName, value } = option || {};
               return (
-                <option key={id} value={id}>
+                <option key={optionName} value={optionName}>
                   {value}
                 </option>
               );

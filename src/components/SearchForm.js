@@ -42,6 +42,7 @@ export default class SearchForm extends React.Component<Props, State> {
             id="query"
             onChange={this.onChange}
             value={value}
+            style={{ padding: '0.5rem 5rem' }}
           />
         </div>
       </div>

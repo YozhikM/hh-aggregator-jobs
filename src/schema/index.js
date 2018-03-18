@@ -36,6 +36,7 @@ const JobSchema = mongoose.Schema({
 
 JobSchema.index({ published_at: 1 });
 JobSchema.index({ created_at: 1 });
+JobSchema.index({ salary: 1 });
 
 const Job = mongoose.model('Job', JobSchema);
 
@@ -52,6 +53,7 @@ JobTC.wrapResolver('pagination', resolver =>
       rawQuery.$or = [
         { description: { $regex: new RegExp(value, 'ig') } },
         { name: { $regex: new RegExp(value, 'ig') } },
+        { employer: { name: { $regex: new RegExp(value, 'ig') } } },
       ];
     },
   })
