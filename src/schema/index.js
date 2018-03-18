@@ -24,6 +24,7 @@ const JobSchema = mongoose.Schema({
     name: String,
     alternate_url: String,
   },
+  // $FlowFixMe
   address: {
     city: String,
     id: String,
@@ -44,19 +45,29 @@ const customizationOptions = {};
 const JobTC = composeWithMongoose(Job, customizationOptions);
 
 JobTC.wrapResolver('pagination', resolver =>
-  resolver.addFilterArg({
-    name: 'q',
-    type: 'String',
-    description: 'Search by query',
-    query: (rawQuery, value) => {
-      // eslint-disable-next-line no-param-reassign
-      rawQuery.$or = [
-        { description: { $regex: new RegExp(value, 'ig') } },
-        { name: { $regex: new RegExp(value, 'ig') } },
-        { employer: { name: { $regex: new RegExp(value, 'ig') } } },
-      ];
-    },
-  })
+  resolver
+    .addFilterArg({
+      name: 'q',
+      type: 'String',
+      description: 'Search by query',
+      query: (rawQuery, value) => {
+        // eslint-disable-next-line no-param-reassign
+        rawQuery.$or = [
+          { description: { $regex: new RegExp(value, 'ig') } },
+          { name: { $regex: new RegExp(value, 'ig') } },
+          { employer: { name: { $regex: new RegExp(value, 'ig') } } },
+        ];
+      },
+    })
+    .addFilterArg({
+      name: 'salaryNotExist',
+      type: 'Boolean',
+      description: 'Filter by salary existing',
+      query: (rawQuery, value) => {
+        // eslint-disable-next-line no-param-reassign
+        rawQuery.salary = { $exists: value };
+      },
+    })
 );
 
 schemaComposer.rootQuery().addFields({

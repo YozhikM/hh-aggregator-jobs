@@ -32,7 +32,6 @@ export default class SearchForm extends React.Component<Props, State> {
 
   render() {
     const { value } = this.state;
-    console.log(value);
     return (
       <div className="row flex-center">
         <div className="form-group margin">

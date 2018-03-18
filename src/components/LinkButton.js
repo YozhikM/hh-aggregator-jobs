@@ -8,16 +8,22 @@ type Props = {|
     city: number | string,
     page: number,
     query: string,
+    currentPage: number,
   |},
 |};
 
 export default function LinkButton(props: Props) {
   const { data } = props;
-  const { city, page, query } = data || {};
+  const { city, page, query, currentPage } = data || {};
 
   return (
     <Link to={`/jobs/${city}-${page}?${query}`} key={`${city}${page}`}>
-      <button className="btn-small">{page}</button>
+      <button
+        className="btn-small"
+        style={page === currentPage ? { backgroundColor: '#41403e', color: '#fff' } : {}}
+      >
+        {page}
+      </button>
     </Link>
   );
 }

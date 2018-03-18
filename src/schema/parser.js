@@ -4,6 +4,7 @@ const fetch = require('node-fetch');
 const chalk = require('chalk');
 const initDB = require('../mongo');
 const { Job } = require('.');
+const removeExpiredJobs = require('./removeExpired');
 
 initDB();
 
@@ -86,6 +87,7 @@ async function parseToDB() {
 
     console.log(chalk.magenta(`Recorded ${logs.length} for ${value}`));
   });
+  removeExpiredJobs();
 }
 
 parseToDB();

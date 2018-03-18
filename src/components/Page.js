@@ -10,6 +10,7 @@ import JobItem from './JobItem';
 import Pagination from './Pagination';
 import Select from './Select';
 import SearchForm from './SearchForm';
+import Checkbox from './Checkbox';
 import { citiesOptions, sortOptions } from './options';
 import {
   type PageQueryQueryVariables,
@@ -25,7 +26,7 @@ type Props = {|
 |};
 
 type State = {
-  page: string,
+  page?: string,
   pages?: number,
   perPage?: number,
   count?: number,
@@ -41,15 +42,12 @@ class Page extends React.Component<Props, State> {
 
     this.onChange = debounce(this.onChange, 600);
 
-    if (page) {
-      this.state = {
-        page,
-      };
-    } else {
-      history.push('160-1');
-      this.state = {
-        page: '160-1',
-      };
+    this.state = {
+      count: 0,
+    };
+
+    if (!page) {
+      history.push('jobs/160-1');
     }
   }
 
@@ -87,15 +85,13 @@ class Page extends React.Component<Props, State> {
   };
 
   componentWillReceiveProps(nextProps: Props) {
-    const { data, match } = nextProps || {};
+    const { data } = nextProps || {};
     const { jobPagination } = data || {};
     const { count, pageInfo } = jobPagination || {};
     const { pageCount } = pageInfo || {};
-    const { params } = match || {};
-    const { page } = params || {};
 
-    if (pageCount && count && page) {
-      this.setState({ pages: pageCount, count, page });
+    if (pageCount && count) {
+      this.setState({ pages: pageCount, count });
     } else if (!pageCount && !count) {
       this.setState({ pages: 0, count: 0 });
     }
@@ -139,12 +135,33 @@ class Page extends React.Component<Props, State> {
     history.push({ pathname: location.pathname, search: query.toString() });
   };
 
+  onChangeCheckbox = () => {
+    const { location, history } = this.props;
+    const query = new URLSearchParams(location.search);
+    if (!query.has('salaryNotExist')) {
+      query.append('salaryNotExist', 'true');
+    } else if (query.get('salaryNotExist') === 'true') {
+      query.delete('salaryNotExist');
+    } else {
+      query.set('salaryNotExist', 'true');
+    }
+    history.push({ pathname: location.pathname, search: query.toString() });
+  };
+
   render() {
-    const { data, location } = this.props;
+    const { data, location, match } = this.props;
+    const { params } = match || {};
+    const { page } = params || {};
+
     const { jobPagination } = data || {};
     const { items } = jobPagination || {};
-    const { count, page } = this.state;
-    const city = page.replace(/-\d+/gi, '');
+    const { count } = this.state;
+    const matchParts = page && page.match(/\d+/gi);
+    let city = '160';
+    let currentPage = 1;
+    if (matchParts) {
+      [city, currentPage] = matchParts;
+    }
     const pagesArray = this.initializeArray();
     const query = new URLSearchParams(location.search);
     if (!items) return null;
@@ -152,17 +169,20 @@ class Page extends React.Component<Props, State> {
     return (
       <div>
         <div className="row flex-center">
+          <Select name="Города" value={city} options={citiesOptions} onSelect={this.onSelect} />
           <Select
-            name="Cities"
-            value={city.replace(/-\d/gi, '')}
-            options={citiesOptions}
-            onSelect={this.onSelect}
-          />
-          <Select
-            name="Sorting"
+            name="Сортировка"
             value={query.get('sort')}
             options={sortOptions}
             onSelect={this.onChangeSort}
+          />
+        </div>
+
+        <div className="row flex-center">
+          <Checkbox
+            option={{ name: 'Скрыть без з/п', value: 'true' }}
+            query={query.get('salaryNotExist')}
+            onChange={this.onChangeCheckbox}
           />
         </div>
 
@@ -183,7 +203,12 @@ class Page extends React.Component<Props, State> {
             })}
         </div>
         <div className="row flex-center align-bottom">
-          <Pagination pagesArray={pagesArray} city={city} query={query.toString()} />
+          <Pagination
+            pagesArray={pagesArray}
+            city={city}
+            query={query.toString()}
+            currentPage={Number(currentPage)}
+          />
         </div>
       </div>
     );
@@ -235,6 +260,10 @@ const options = ({ match, location }: Props): { variables: PageQueryQueryVariabl
     filter = { q: query.get('q'), area };
   } else {
     filter = { area };
+  }
+
+  if (query.has('salaryNotExist')) {
+    filter = { salaryNotExist: query.get('salaryNotExist'), ...filter };
   }
 
   let sort: SortFindManyJobInput;
