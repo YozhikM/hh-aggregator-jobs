@@ -32,6 +32,7 @@ export default class SearchForm extends React.Component<Props, State> {
 
   render() {
     const { value } = this.state;
+    console.log(value);
     return (
       <div className="row flex-center">
         <div className="form-group margin">
@@ -42,7 +43,7 @@ export default class SearchForm extends React.Component<Props, State> {
             id="query"
             onChange={this.onChange}
             value={value}
-            style={{ padding: '0.5rem 5rem' }}
+            style={{ padding: '0.5rem 3rem' }}
           />
         </div>
       </div>

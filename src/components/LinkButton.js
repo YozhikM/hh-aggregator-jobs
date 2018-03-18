@@ -16,7 +16,7 @@ export default function LinkButton(props: Props) {
   const { city, page, query } = data || {};
 
   return (
-    <Link to={`/${city}-${page}${query}`} key={`${city}${page}`}>
+    <Link to={`/${city}-${page}?${query}`} key={`${city}${page}`}>
       <button className="btn-small">{page}</button>
     </Link>
   );

@@ -2,9 +2,6 @@
   "name": "hh-aggregator",
   "version": "1.0.0",
   "description": "Aggregator vacancies",
-  "engines": {
-    "node": ">=8.10.0"
-  },
   "scripts": {
     "start": "node src/server/index.js",
     "parse": "node src/schema/parser.js",

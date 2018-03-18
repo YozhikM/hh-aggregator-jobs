@@ -146,7 +146,7 @@ class Page extends React.Component<Props, State> {
 
     return (
       <div>
-        <div className="row">
+        <div className="row flex-center">
           <Select
             name="Cities"
             value={city.replace(/-\d/gi, '')}
@@ -178,7 +178,7 @@ class Page extends React.Component<Props, State> {
             })}
         </div>
         <div className="row flex-center align-bottom">
-          <Pagination pagesArray={pagesArray} city={city} query={query} />
+          <Pagination pagesArray={pagesArray} city={city} query={query.toString()} />
         </div>
       </div>
     );

@@ -47,27 +47,25 @@ export default class Select extends React.Component<Props, State> {
     const { activeOption } = this.state;
 
     return (
-      <div className="row flex-center">
-        <div className="form-group margin">
-          <label htmlFor="select">{name}</label>
-          <select
-            id="select"
-            ref={select => {
-              this.$select = select;
-            }}
-            value={activeOption}
-            onChange={this.onSelect}
-          >
-            {options.map(option => {
-              const { name: optionName, value } = option || {};
-              return (
-                <option key={optionName} value={optionName}>
-                  {value}
-                </option>
-              );
-            })}
-          </select>
-        </div>
+      <div className="form-group margin">
+        <label htmlFor="select">{name}</label>
+        <select
+          id="select"
+          ref={select => {
+            this.$select = select;
+          }}
+          value={activeOption}
+          onChange={this.onSelect}
+        >
+          {options.map(option => {
+            const { name: optionName, value } = option || {};
+            return (
+              <option key={optionName} value={optionName}>
+                {value}
+              </option>
+            );
+          })}
+        </select>
       </div>
     );
   }
