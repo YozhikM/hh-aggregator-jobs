@@ -12,17 +12,17 @@ import Select from './Select';
 import SearchForm from './SearchForm';
 import Checkbox from './Checkbox';
 import { citiesOptions, sortOptions } from './options';
-import {
-  type PageQueryQueryVariables,
-  type SortFindManyJobInput,
-  type PageQueryQuery,
-} from './type';
+// import {
+//   type PageQueryQueryVariables,
+//   type SortFindManyJobInput,
+//   type PageQueryQuery,
+// } from './type';
 
 type Props = {|
   history: RouterHistory,
   match: Match,
   location: Location,
-  data: PageQueryQuery,
+  data: Object,
 |};
 
 type State = {
@@ -239,7 +239,7 @@ const PageQuery = gql`
   ${Page.fragments.job}
 `;
 
-const options = ({ match, location }: Props): { variables: PageQueryQueryVariables } => {
+const options = ({ match, location }: Props): { variables: Object } => {
   const { params } = match || {};
   const { page } = params || {};
   let area;
@@ -266,7 +266,7 @@ const options = ({ match, location }: Props): { variables: PageQueryQueryVariabl
     filter = { salaryNotExist: query.get('salaryNotExist'), ...filter };
   }
 
-  let sort: SortFindManyJobInput;
+  let sort: string;
   if (query.has('sort')) {
     sort = (query.get('sort'): any);
   } else {

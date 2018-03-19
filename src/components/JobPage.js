@@ -6,10 +6,10 @@ import type { Match } from 'react-router-dom';
 import gql from 'graphql-tag';
 import 'papercss/dist/paper.min.css';
 import JobItem from './JobItem';
-import { type JobPageQueryQuery, type JobPageQueryQueryVariables } from './type';
+// import { type JobPageQueryQuery, type JobPageQueryQueryVariables } from './type';
 
 type Props = {
-  data: JobPageQueryQuery,
+  data: Object,
   match: Match, // eslint-disable-line
 };
 
@@ -60,7 +60,7 @@ const JobPageQuery = gql`
   }
 `;
 
-const options = (props: Props): { variables: JobPageQueryQueryVariables } => {
+const options = (props: Props): { variables: Object } => {
   const { params } = props.match || {};
   const { id } = params || {};
 
