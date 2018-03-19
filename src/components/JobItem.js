@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 import 'papercss/dist/paper.min.css';
 
 const badges = [
@@ -28,13 +29,11 @@ type Props = {|
 
 type State = {
   isFullDescription: boolean,
-  isRemoved: boolean,
 };
 
 export default class JobItem extends React.Component<Props, State> {
   state = {
     isFullDescription: false,
-    isRemoved: false,
   };
 
   getSalary = (salary: ?Object): string => {
@@ -119,20 +118,25 @@ export default class JobItem extends React.Component<Props, State> {
   };
 
   render() {
-    const { isFullDescription, isRemoved } = this.state;
+    const { isFullDescription } = this.state;
     const { job } = this.props;
     const { id, name, salary, snippet, employer, address, published_at, description } = job || {};
     const { city: jobCity, metro } = address || {};
     const { requirement, responsibility } = snippet || {};
     const { alternate_url: companyUrl, name: companyName } = employer || {};
 
-    if (isRemoved) return null;
-
     return (
       <div className="sm-12 md-6 lg-4 col align-top" key={id}>
         <div className="card">
           <div className="card-header">
-            <div className="row flex-edges">{this.getBadges(description || '')}</div>
+            <div className="row flex-edges">
+              {this.getBadges(description || '')}
+              <Link to={`/job/${id}`} style={{ background: 'none' }}>
+                <span style={{ marginRight: '10px', marginTop: '10px' }} className="badge blue">
+                  К странице
+                </span>
+              </Link>
+            </div>
             <h4 className="card-subtitle" style={{ fontFamily: '"Neucha",sans-serif' }}>
               {name}
             </h4>
