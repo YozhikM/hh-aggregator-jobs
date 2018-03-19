@@ -10,10 +10,6 @@ initDB();
 const app = express();
 const bundler = new ParcelBundler('index.html');
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('dist'));
-}
-
 app.use('/graphql', bodyParser.json(), graphqlExpress({ schema: graphqlSchema }));
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 app.use(bundler.middleware());
