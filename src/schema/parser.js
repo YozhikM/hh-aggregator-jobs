@@ -12,15 +12,24 @@ async function upsertDesc(job) {
   const { id } = job || {};
 
   const response = await fetch(`https://api.hh.ru/vacancies/${id}`);
-  const result = await response.json();
+  const { schedule, description, experience, employment, address } = await response.json();
+  const { lat, lng } = address || {};
 
-  return result.description;
+  return { description, schedule, experience, employment, lat, lng };
 }
 
 async function upsertToDB(job, area) {
-  const description = await upsertDesc(job);
+  const { description, schedule, employment, experience, lat, lng } = await upsertDesc(job);
 
-  const newJob = new Job({ ...job, area, description });
+  const newJob = new Job({
+    ...job,
+    area,
+    description,
+    schedule,
+    employment,
+    experience,
+    coords: { lat, lng },
+  });
 
   await Job.insertMany(newJob, err => {
     if (err) console.error(err);

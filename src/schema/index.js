@@ -33,6 +33,23 @@ const JobSchema = mongoose.Schema({
     },
   },
   description: String,
+  schedule: {
+    id: String,
+    name: String,
+  },
+  experience: {
+    id: String,
+    name: String,
+  },
+  employment: {
+    id: String,
+    name: String,
+  },
+  coords: {
+    lat: Number,
+    lng: Number,
+  },
+  key_skills: Array,
 });
 
 JobSchema.index({ published_at: 1 });

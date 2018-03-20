@@ -73,7 +73,19 @@ class JobPage extends React.Component<Props> {
     const { data } = this.props;
     const { jobOne } = data || {};
     if (!data || !jobOne) return null;
-    const { id, name, salary, employer, address, published_at, description, area } = jobOne || {};
+    const {
+      id,
+      name,
+      salary,
+      employer,
+      address,
+      published_at,
+      description,
+      area,
+      employment,
+      experience,
+    } =
+      jobOne || {};
     const { city: jobCity, metro } = address || {};
     const { alternate_url: companyUrl, name: companyName } = employer || {};
 
@@ -93,12 +105,17 @@ class JobPage extends React.Component<Props> {
               </p>
             </div>
             <div className="card-body">
-              {jobCity && <p className="card-text">{jobCity}</p>}
+              {(jobCity || metro) && (
+                <p className="card-text">
+                  {`${jobCity || ''} ${
+                    metro.station_name ? `– Станция метро: ${metro.station_name}` : ''
+                  }`}
+                </p>
+              )}
 
-              {metro &&
-                metro.station_name && (
-                  <p className="card-text">{`Станция метро: ${metro.station_name}`}</p>
-                )}
+              {(employment || experience) && (
+                <p className="card-text">{`${employment.name || ''} – ${experience.name || ''}`}</p>
+              )}
 
               <a href={companyUrl} className="card-text">
                 {companyName}
@@ -154,6 +171,12 @@ const JobPageQuery = gql`
         metro {
           station_name
         }
+      }
+      employment {
+        name
+      }
+      experience {
+        name
       }
     }
   }
