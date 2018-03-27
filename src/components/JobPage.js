@@ -108,7 +108,7 @@ class JobPage extends React.Component<Props> {
               {(jobCity || metro) && (
                 <p className="card-text">
                   {`${jobCity || ''} ${
-                    metro.station_name ? `– Станция метро: ${metro.station_name}` : ''
+                    metro && metro.station_name ? `– Станция метро: ${metro.station_name}` : ''
                   }`}
                 </p>
               )}
