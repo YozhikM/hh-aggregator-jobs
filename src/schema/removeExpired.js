@@ -7,7 +7,7 @@ async function removeExpiredJobs() {
   const newDateString = format(addMonths(new Date(), -1), 'YYYY-MM-DD');
 
   await Job.deleteMany({
-    published_at: { $lte: newDateString },
+    published_at: { $lt: newDateString },
   });
 }
 
