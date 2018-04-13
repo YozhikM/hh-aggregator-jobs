@@ -16,21 +16,38 @@ type Props = {
 const badges = [
   { name: 'react', color: 'success' },
   { name: 'node', color: 'success' },
-  { name: 'javascript', color: 'secondary' },
-  { name: 'vue', color: 'secondary' },
-  { name: 'angular', color: 'secondary' },
-  { name: 'jquery', color: 'warning' },
-  { name: 'php', color: 'danger' },
-  { name: 'junior', color: 'success' },
-  { name: '.net', color: 'danger' },
-  { name: 'c#', color: 'danger' },
-  { name: 'верстальщик', color: 'danger' },
-  { name: 'python', color: 'danger' },
-  { name: 'mongo', color: 'success' },
   { name: 'graphql', color: 'success' },
+  { name: 'middle', color: 'success' },
+  { name: 'junior', color: 'success' },
+  { name: 'mongo', color: 'success', regs: ['mongo', 'монго'] },
+  { name: 'angular', color: 'secondary', regs: ['angular', 'ангуляр', 'ангулар'] },
+  { name: 'javascript', color: 'secondary', regs: ['js', 'javascript', 'es5', 'es6'] },
+  { name: 'vue', color: 'secondary' },
+  { name: 'design', color: 'danger', regs: ['photoshop', 'ui', 'ux', 'design', 'дизайн'] },
+  { name: 'java', color: 'danger', regs: [/^java/] },
+  { name: 'c#', color: 'danger' },
+  { name: 'верстальщик', color: 'danger', regs: ['верстка', 'верстальщик', 'bootstrap'] },
+  { name: 'python', color: 'danger' },
+  { name: '.net', color: 'danger' },
   { name: 'objective-с', color: 'danger' },
   { name: 'swift', color: 'danger' },
   { name: 'ruby', color: 'danger' },
+  { name: 'php', color: 'danger' },
+  {
+    name: 'LEGACY',
+    color: 'danger',
+    regs: [
+      'jquery',
+      'angularjs',
+      'knockout',
+      'backbone',
+      'gulp',
+      'browserify',
+      'wordpress',
+      'bitrix',
+      'битрикс',
+    ],
+  },
 ];
 
 class JobPage extends React.Component<Props> {
@@ -46,6 +63,14 @@ class JobPage extends React.Component<Props> {
   getBadges = (string: string): ?React.Node => {
     const arr = badges
       .map(badge => {
+        if (badge.regs) {
+          const regsMap = badge.regs.map(badgeReg => {
+            const reg = new RegExp(badgeReg, 'gi');
+            if (string.match(reg)) return badge;
+            return null;
+          });
+          return regsMap[0];
+        }
         const reg = new RegExp(badge.name, 'gi');
         if (string.match(reg)) return badge;
         return null;
