@@ -263,7 +263,7 @@ const options = ({ match, location }: Props): { variables: Object } => {
   }
 
   if (query.has('salaryNotExist')) {
-    filter = { salaryNotExist: query.get('salaryNotExist'), ...filter };
+    filter = { ...filter, salaryNotExist: query.get('salaryNotExist') };
   }
 
   let sort: string;
