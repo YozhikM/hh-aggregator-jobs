@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { graphql } from 'react-apollo';
-import { type Match, Link } from 'react-router-dom';
+import { type Match, type RouterHistory } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { format } from 'date-fns';
 import 'papercss/dist/paper.min.css';
@@ -11,6 +11,7 @@ import 'papercss/dist/paper.min.css';
 type Props = {
   data: Object,
   match: Match, // eslint-disable-line
+  history: RouterHistory,
 };
 
 const badges = [
@@ -155,9 +156,12 @@ class JobPage extends React.Component<Props> {
               )}
 
               <div className="flex-center row">
-                <Link to={`/jobs/${area}-1`}>
-                  <button className="paper-btn btn-small">Назад к списку</button>
-                </Link>
+                <button
+                  className="paper-btn btn-secondary"
+                  onClick={() => this.props.history.goBack()}
+                >
+                  Назад к списку
+                </button>
               </div>
             </div>
           </div>
