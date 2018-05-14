@@ -121,11 +121,14 @@ class JobPage extends React.Component<Props> {
           <div className="card">
             <div className="card-header">
               <div className="row flex-edges">{this.getBadges(description || '')}</div>
-              <h4 className="card-subtitle" style={{ fontFamily: '"Neucha",sans-serif' }}>
+              <h4
+                className="card-subtitle"
+                style={{ fontFamily: '"Neucha",sans-serif', color: '#fff' }}
+              >
                 {name}
               </h4>
 
-              <p className="card-text">
+              <p className="card-text" style={{ color: '#fff' }}>
                 <strong>Зарплата: </strong>
                 {this.getSalary(salary)}
               </p>

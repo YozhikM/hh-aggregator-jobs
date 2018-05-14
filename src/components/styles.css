@@ -1,0 +1,33 @@
+.card {
+  background-color: #fff;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.37);
+  border: none !important;
+  max-width: 700px;
+}
+
+.card-body {
+  border: 2px solid #e6e7e9;
+}
+
+.card-header {
+  background-color: #2980b9 !important;
+}
+
+.form-group > label {
+  color: #fff;
+}
+
+input,
+select,
+textarea {
+  color: #fff !important;
+  border: 2px solid #fff !important;
+}
+.form-group .paper-radio input + span:before,
+.form-group .paper-check input + span:before {
+  border: 2px solid #fff !important;
+}
+
+input::placeholder {
+  color: #fff !important;
+}
