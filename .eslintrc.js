@@ -14,6 +14,7 @@ module.exports = {
     'jsx-a11y/label-has-for': 0,
     'react/sort-comp': 0,
     'react/prefer-stateless-function': 0,
+    'react/require-default-props': 0,
     'class-methods-use-this': 0,
     'prettier/prettier': [
       'error',
