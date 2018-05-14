@@ -40,7 +40,7 @@ async function upsertToDB(job, area) {
 
 async function getFetchData(page, area) {
   const response = await fetch(
-    `https://api.hh.ru/vacancies?text=frontend+javascript&area=${area}&per_page=10&page=${page}&order_by=publication_time`
+    `https://api.hh.ru/vacancies?text=javascript+NOT+php+NOT+python+NOT+java+NOT+.NET+NOT+ruby&area=${area}&per_page=10&page=${page}&order_by=publication_time`
   );
   const result = await response.json();
 
