@@ -1,9 +1,9 @@
 /* @flow */
 
 import * as React from 'react';
-import 'papercss/dist/paper.min.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
+import 'papercss/dist/paper.min.css';
 import './styles.css';
 
 import Loader from './Loader';

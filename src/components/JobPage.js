@@ -6,6 +6,7 @@ import { type Match, type RouterHistory } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { format } from 'date-fns';
 import 'papercss/dist/paper.min.css';
+import './styles.css';
 // import { type JobPageQueryQuery, type JobPageQueryQueryVariables } from './type';
 
 type Props = {

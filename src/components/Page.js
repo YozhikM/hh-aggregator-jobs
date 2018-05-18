@@ -12,6 +12,7 @@ import Select from './Select';
 import SearchForm from './SearchForm';
 import Checkbox from './Checkbox';
 import { citiesOptions, sortOptions } from './options';
+import './styles.css';
 // import {
 //   type PageQueryQueryVariables,
 //   type SortFindManyJobInput,

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import 'papercss/dist/paper.min.css';
+import './styles.css';
 
 type OptionT = { name: string | number, value: string };
 

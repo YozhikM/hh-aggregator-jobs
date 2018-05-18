@@ -4,6 +4,7 @@ import * as React from 'react';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import 'papercss/dist/paper.min.css';
+import './styles.css';
 
 const badges = [
   { name: 'react', color: 'success' },

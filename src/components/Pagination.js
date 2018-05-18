@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import LinkButton from './LinkButton';
+import './styles.css';
 
 type Props = {|
   pagesArray: Array<number>,
